@@ -18,13 +18,13 @@ class LoanApplication(models.Model):
     business_plan = models.CharField(max_length=500) # set a path for plans?
     status = models.CharField(max_length=20, choices=[
                                                     ('pending', 'Pending'),
-                                                    ('ml_approved', 'ML Approved'),
-                                                    ('ml_rejected', 'ML Rejected'),
+                                                    ('ml_approved', 'Auto Approved'),
+                                                    ('ml_rejected', 'Auto Rejected'),
                                                     ('approved', 'Approved'),
                                                     ('rejected', 'Rejected')
                                                 ], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
-    #updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class BusinessPlanEvaluation(models.Model):
     loan_application = models.OneToOneField(LoanApplication, on_delete=models.CASCADE, related_name='business_plan_evaluation')
