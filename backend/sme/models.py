@@ -7,12 +7,12 @@ class SME(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sme_profile')
     name = models.CharField(max_length=255)
     industry = models.CharField(max_length=100)
+    address = models.CharField(max_length=30)
 
 
 class LoanApplication(models.Model):
     sme = models.ForeignKey(SME, on_delete=models.CASCADE, related_name='loan_applications')
     amount = models.DecimalField(max_digits=15, decimal_places=2)
-    address = models.CharField(max_length=30)
     #nature of businessx
     #purpose = models.TextField()
     business_plan = models.CharField(max_length=500) # set a path for plans?
