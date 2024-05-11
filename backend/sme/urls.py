@@ -17,5 +17,5 @@ urlpatterns = [
     path('api/stage1',views.stage1, name="Stage 1"),
     path('api/stage2',views.stage2, name="Stage 2"),
     path('api/stage3',views.stage3, name="Stage 3"),
-    
+
 ]

@@ -4,12 +4,13 @@ from django_nextjs.render import render_nextjs_page_sync
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 # from .models import Team
-# from .serializer import TeamsSerializer
+from .serializer import SMESerializer,LoanApplicationSerializer,BusinessPlanEvaluationSerializer
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -28,22 +29,9 @@ from django.http import JsonResponse
 from .models import SME, LoanApplication, BusinessPlanEvaluation
 from ai_stuff.rf_test import pred as pred_ml
 from django_nextjs.render import render_nextjs_page_sync
+
 def index(request):
     return render_nextjs_page_sync(request)
-
-# class TeamsViewSet(viewsets.ModelViewSet):
-#     queryset = Team.objects.all()
-#     serializer_class = TeamsSerializer
-#     # permission_classes = [IsAuthenticated]
-#     def create(self,request): # Basically to handle POST Requests
-#         return Response("Nope",status=status.HTTP_404_NOT_FOUND)
-#     @action(detail=True, methods=['GET'])
-#     def team_detail(self, request, pk=None):
-#         team = self.get_object()  # Get the team instance
-#         serializer = self.get_serializer(team)  # Serialize the team data
-#         return Response(serializer.data)
-
-
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])  # Add this line
@@ -70,51 +58,53 @@ def register(request):
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['POST'])
 def sme_reg(request):
-    if request.method == 'POST':
-        # Assuming POST data contains SME registration information
-        data = request.POST
-        user = request.user  # Assuming user is authenticated
-        sme = SME.objects.create(
-            user=user,
-            name=data.get('name'),
-            yoe=data.get('yoe'),
-            industry=data.get('industry'),
-            address=data.get('address'),
-            cibil_score=data.get('cibil_score'),
-            residential_assets_value=data.get('residential_assets_value', 0),
-            commercial_assets_value=data.get('commercial_assets_value', 0),
-            luxury_assets_value=data.get('luxury_assets_value', 0),
-            bank_asset_value=data.get('bank_asset_value', 0),
-            self_employed=data.get('self_employed', False)
-        )
-        return JsonResponse({"message": "SME Registration successful"})
-    else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+    # Assuming POST data contains SME registration information
+    data = request.POST
+    user = request.user  # Assuming user is authenticated
+    sme = SME.objects.create(
+        user=user,
+        name=data.get('name'),
+        yoe=data.get('yoe'),
+        industry=data.get('industry'),
+        address=data.get('address'),
+        cibil_score=data.get('cibil_score'),
+        residential_assets_value=data.get('residential_assets_value', 0),
+        commercial_assets_value=data.get('commercial_assets_value', 0),
+        luxury_assets_value=data.get('luxury_assets_value', 0),
+        bank_asset_value=data.get('bank_asset_value', 0),
+        self_employed=data.get('self_employed', False)
+    )
+    return JsonResponse({"message": "SME Registration successful"})
 
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['POST'])
 def sme_update(request):
-    if request.method == 'POST':
-        data = request.POST
-        sme = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
-        if sme:
-            sme.name = data.get('name', sme.name)
-            sme.yoe = data.get('yoe', sme.yoe)
-            sme.industry = data.get('industry', sme.industry)
-            sme.address = data.get('address', sme.address)
-            sme.cibil_score = data.get('cibil_score', sme.cibil_score)
-            sme.save()
-            return JsonResponse({"message": "SME Update successful"})
-        else:
-            return JsonResponse({"error": "SME profile not found"}, status=404)
+    data = request.POST
+    sme = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
+    if sme:
+        sme.name = data.get('name', sme.name)
+        sme.yoe = data.get('yoe', sme.yoe)
+        sme.industry = data.get('industry', sme.industry)
+        sme.address = data.get('address', sme.address)
+        sme.cibil_score = data.get('cibil_score', sme.cibil_score)
+        sme.save()
+        return JsonResponse({"message": "SME Update successful"})
     else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+        return JsonResponse({"error": "SME profile not found"}, status=404)
 
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['GET'])
 def sme_getdata(request):
-    if request.method == 'GET':
-        sme_data = SME.objects.filter(user=request.user)
-        return JsonResponse({"data": list(sme_data)})
-    else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+    print("Request Method:", request.method)
+    print("User:", request.user)
+    print("Authorization Header:", request.headers.get('Authorization'))
+    sme_data = SME.objects.filter(user=request.user)
+    serialized_data = SMESerializer(sme_data, many=True)
+    return Response(serialized_data.data)
+
 
 def stage1(request):
     if request.method == 'POST':
