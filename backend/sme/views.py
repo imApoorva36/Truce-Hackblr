@@ -149,19 +149,19 @@ def approval_stage(request):
     loan_application.repay_prob = output
     if(output >= 0.8):
         loan_application.status = 'ml_approved'
+        return JsonResponse({"message": f"Stage 2: Auto-Verification Approved -> {output}"})
     else:
         loan_application.status = 'ml_rejected'
         return JsonResponse({"message": f"Stage 2: Auto-Verification Failed -> {output}"})
     
 
 @permission_classes([IsAuthenticated])  # Add this line
-@api_view(['POST'])
+@api_view(['GET'])
 def stage3(request):
     sme_instance = request.user.sme_profile
     loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
     combined_score, factor_score = llm_score(loan_application.business_plan)
 
-    data = request.POST
     bp_eval = BusinessPlanEvaluation.objects.create(loan_application = loan_application,
                                                     market_analysis_rating = factor_score['Market Analysis and Opportunity'],
                                                     business_model_rating = factor_score['Business Model and Strategy'],
@@ -172,9 +172,7 @@ def stage3(request):
                                                     )
 
     
-    decision = data.get('decision')
     # Update LoanApplication status based on manual approval
-    loan_application.status = decision
 
     #loan_application.save()
-    return JsonResponse({"message": f"Stage 3: Loan application {decision}"})
+    return JsonResponse({"message": f"Stage 3: Loan Processing"})
