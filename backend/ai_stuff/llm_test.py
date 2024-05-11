@@ -6,6 +6,24 @@ API_TOKEN = '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'
 API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
+def extract_ratings(output_text):
+    ratings = {}
+    factors = [
+        "Market Analysis and Opportunity",
+        "Business Model and Strategy",
+        "Financial Projections and Feasibility",
+        "Management Team and Experience",
+        "Risk Assessment and Mitigation"
+    ]
+    for factor in factors:
+        pattern = rf"{factor}:\s(\d+)"
+        match = re.search(pattern, output_text)
+        if match:
+            ratings[factor] = int(match.group(1))
+        else:
+            ratings[factor] = None
+    return ratings
+
 def extract_combined_rating(output_text):
     pattern = r"Combined rating: (\d+\/10)"
     match = re.search(pattern, output_text)
@@ -44,10 +62,8 @@ def scores(business_plan_text):
     #output_text = output[0]['generated_text']
     #print(output_text)
     combined_rating = extract_combined_rating(output_text)
-    if combined_rating:
-        print(f"Combined rating: {combined_rating}")
-    else:
-        print("Combined rating not found in the output.")
+    factors = extract_ratings(output_text)
+    return combined_rating, factors
 
 
 if __name__ == "__main__":

@@ -28,6 +28,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import SME, LoanApplication, BusinessPlanEvaluation
 from ai_stuff.rf_test import pred as pred_ml
+from ai_stuff.llm_test import scores as llm_score
 from django_nextjs.render import render_nextjs_page_sync
 
 def index(request):
