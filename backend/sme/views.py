@@ -105,83 +105,98 @@ def sme_getdata(request):
     serialized_data = SMESerializer(sme_data, many=True)
     return Response(serialized_data.data)
 
-
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['POST'])
 def stage1(request):
-    if request.method == 'POST':
-        sme = request.user.sme_profile
-        cibil_score = sme.cibil_score  # Assuming CIBIL score is stored in SME model
-        # Perform API call or calculation based on CIBIL score
-        # Return appropriate response
-        if cibil_score >= 700:
-            loan_application = LoanApplication.objects.create(sme=sme)
-            return JsonResponse({"message": "Stage 1: CIBIL score check passed"})
-        else:
-            return JsonResponse({"error": "Stage 1: CIBIL score check failed"})
-    else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
 
+    sme = request.user.sme_profile
+    cibil_score = sme.cibil_score  # Assuming CIBIL score is stored in SME model
+    # Perform API call or calculation based on CIBIL score
+    # Return appropriate response
+    if cibil_score >= 700:
+        loan_application = LoanApplication.objects.create(sme=sme)
+        return JsonResponse({"message": "Stage 1: CIBIL score check passed"})
+    else:
+        return JsonResponse({"error": "Stage 1: CIBIL score check failed"})
+   
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['POST'])
 def loan_application(request):
-    if request.method == 'POST':
-        # Assuming POST data contains SME registration information
-        data = request.POST
-        user = request.user  # Assuming user is authenticated
-        sme_prof = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
-        loan = LoanApplication.objects.create(
-            sme=sme_prof,
-            no_of_dependents = data.get('no_of_dependents'),
-            income_annum = data.get('income_annum'),
-            #cibil_score = sme_prof.cibil_score,
-            residential_assets_value = data.get('residential_assets_value'),
-            commercial_assets_value = data.get('commercial_assets_value'),
-            luxury_assets_value = data.get('luxury_assets_value'),
-            bank_asset_value = data.get('bank_asset_value'),
-            self_employed = data.get('self_employed'),
-            loan_amount = data.get('loan_amount'),
-            loan_term = data.get('loan_term'),
-            business_plan = data.get('business_plan')
-                )
-        request.session['loan_application_id'] = loan.id
-        return JsonResponse({"message": "Loan Application successful"})
-    else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
-
+    # Assuming POST data contains SME registration information
+    data = request.POST
+    user = request.user  # Assuming user is authenticated
+    sme_prof = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
+    loan = LoanApplication.objects.create(
+        sme=sme_prof,
+        no_of_dependents = data.get('no_of_dependents'),
+        income_annum = data.get('income_annum'),
+        #cibil_score = sme_prof.cibil_score,
+        residential_assets_value = data.get('residential_assets_value'),
+        commercial_assets_value = data.get('commercial_assets_value'),
+        luxury_assets_value = data.get('luxury_assets_value'),
+        bank_asset_value = data.get('bank_asset_value'),
+        self_employed = data.get('self_employed'),
+        loan_amount = data.get('loan_amount'),
+        loan_term = data.get('loan_term'),
+        business_plan = data.get('business_plan')
+            )
+    # request.session['loan_application_id'] = loan.id
+    return JsonResponse({"message": "Loan Application successful"})
+  
+   
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['POST'])
 def stage2(request):
-    if request.method == 'POST':
-        loan_application_id = request.session.get('loan_application_id')
-        loan_application = get_object_or_404(LoanApplication, id=loan_application_id)
 
-        # Perform ML evaluation based on model
-        # Update LoanApplication status accordingly
-        sme = request.user.sme_profile
-        loan_application = a#Fill in
-        # Perform ML evaluation and update LoanApplication status
-        # For now, let's assume it's approved
-        sme_data = [loan_application.no_of_dependents, 
-                    loan_application.income_annum, 
-                    loan_application.loan_amount, 
-                    loan_application.loan_term, 
-                    sme.cibil_score, 
-                    loan_application.residential_assets_value, 
-                    loan_application.commercial_assets_value, 
-                    loan_application.luxury_assets_value, 
-                    loan_application.bank_asset_value, 
-                    loan_application.self_employed]
-        output = pred_ml()
-        loan_application.status = 'approved'
-        loan_application.save()
-        return JsonResponse({"message": "Stage 2: Loan application approved"})
+    # Perform ML evaluation based on model
+    # Update LoanApplication status accordingly
+    sme_instance = request.user.sme_profile
+    loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
+
+    # Perform ML evaluation and update LoanApplication status
+    # For now, let's assume it's approved
+    sme_data = [loan_application.no_of_dependents, 
+                loan_application.income_annum, 
+                loan_application.loan_amount, 
+                loan_application.loan_term, 
+                sme_instance.cibil_score, 
+                loan_application.residential_assets_value, 
+                loan_application.commercial_assets_value, 
+                loan_application.luxury_assets_value, 
+                loan_application.bank_asset_value, 
+                int(loan_application.self_employed)]
+    output = pred_ml(sme_data)
+    loan_application.repay_prob = output
+    if(output >= 0.8):
+        loan_application.status = 'ml_approved'
     else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+        loan_application.status = 'ml_rejected'
 
+
+    loan_application.save()
+    return JsonResponse({"message": f"Stage 2: Loan application approved {output}"})
+
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['POST'])
 def stage3(request):
-    if request.method == 'POST':
-        data = request.POST
-        loan_application_id = data.get('loan_application_id')
-        decision = data.get('decision')
-        # Update LoanApplication status based on manual approval
-        loan_application = LoanApplication.objects.get(id=loan_application_id)
-        loan_application.status = decision
-        loan_application.save()
-        return JsonResponse({"message": f"Stage 3: Loan application {decision}"})
-    else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+    sme_instance = request.user.sme_profile
+    loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
+    combined_score, factor_score = llm_score(loan_application.business_plan)
+
+    data = request.POST
+    bp_eval = BusinessPlanEvaluation.objects.create(loan_application = loan_application,
+                                                    market_analysis_rating = factor_score['Market Analysis and Opportunity'],
+                                                    business_model_rating = factor_score['Business Model and Strategy'],
+                                                    financial_projections_rating = factor_score['Financial Projections and Feasibility'],
+                                                    management_team_rating = factor_score['Management Team and Experience'],
+                                                    risk_assessment_rating = factor_score['Risk Assessment and Mitigation'],
+                                                    overall_score = combined_score
+                                                    )
+
+    
+    decision = data.get('decision')
+    # Update LoanApplication status based on manual approval
+    loan_application.status = decision
+
+    #loan_application.save()
+    return JsonResponse({"message": f"Stage 3: Loan application {decision}"})

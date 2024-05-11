@@ -25,7 +25,6 @@ class LoanApplication(models.Model):
     bank_asset_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)	
     self_employed = models.BooleanField(default=False)
 
-
     loan_amount = models.DecimalField(max_digits=15, decimal_places=2)
     loan_term = models.IntegerField()
     repay_prob = models.DecimalField(max_digits=5, decimal_places=2, default=0)
@@ -48,4 +47,4 @@ class BusinessPlanEvaluation(models.Model):
     management_team_rating = models.IntegerField()
     risk_assessment_rating = models.IntegerField()
     overall_score = models.DecimalField(max_digits=3, decimal_places=2)
-    feedback = models.TextField()
+    feedback = models.TextField(default='')

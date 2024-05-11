@@ -1,17 +1,8 @@
 from rest_framework import serializers
-from .models import SME, LoanApplication, BusinessPlanEvaluation
-
-class SMESerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SME
-        fields = '__all__'
-
-class LoanApplicationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LoanApplication
-        fields = '__all__'
-
-class BusinessPlanEvaluationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BusinessPlanEvaluation
-        fields = '__all__'
+# from .models import Team
+from django.contrib.auth import get_user_model
+from rest_framework import status
+# class TeamsSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Team
+#         fields = ('name','member1','member2','member3',)
