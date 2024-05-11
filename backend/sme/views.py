@@ -97,9 +97,6 @@ def sme_update(request):
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['GET'])
 def sme_getdata(request):
-    print("Request Method:", request.method)
-    print("User:", request.user)
-    print("Authorization Header:", request.headers.get('Authorization'))
     sme_data = SME.objects.filter(user=request.user)
     serialized_data = SMESerializer(sme_data, many=True)
     return Response(serialized_data.data)
@@ -118,7 +115,7 @@ def auto_stage(request):
             sme=sme_instance,
             no_of_dependents = data.get('no_of_dependents'),
             income_annum = data.get('income_annum'),
-            #cibil_score = sme_prof.cibil_score,
+            cibil_score = sme_instance.cibil_score,
             residential_assets_value = data.get('residential_assets_value'),
             commercial_assets_value = data.get('commercial_assets_value'),
             luxury_assets_value = data.get('luxury_assets_value'),
@@ -182,7 +179,7 @@ def manual_stage(request):
 def generate_loan_approval_document(request, loan_id):
     loan = LoanApplication.objects.get(id=loan_id)
     context = {'loan': loan}
-    html_content = render_to_string('loan_approval_template.html', context)
+    html_content = render_to_string('sme/loan_approval_template.html', context)
     pdf_file = HTML(string=html_content).write_pdf()
     response = HttpResponse(pdf_file, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="loan_approval.pdf"'

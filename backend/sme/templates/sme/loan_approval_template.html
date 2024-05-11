@@ -7,30 +7,71 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
         }
         .container {
             max-width: 800px;
             margin: auto;
             padding: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
+            margin-top: 0;
+            padding-top: 20px;
+            color: #333;
         }
-        .loan-details {
-            margin-bottom: 20px;
+        h2 {
+            margin-top: 30px;
+            color: #555;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
         }
-        .loan-details table {
+        table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
         }
-        .loan-details th, .loan-details td {
-            padding: 8px;
-            text-align: left;
+        th, td {
+            padding: 10px;
             border-bottom: 1px solid #ddd;
+        }
+        th {
+            text-align: left;
+            background-color: #f2f2f2;
+            color: #555;
+            font-weight: bold;
+        }
+        td {
+            vertical-align: top;
+        }
+        .sme-details p {
+            margin-bottom: 5px;
+        }
+        .status {
+            margin-top: 30px;
+        }
+        .status p {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            text-align: center;
+            margin-top: 0;
+            padding-top: 10px;
+            color: #333;
+            font-size: 1.5rem;
         }
     </style>
 </head>
@@ -38,38 +79,42 @@
     <div class="container">
         <h1>Loan Approval Document</h1>
         
-        <div class="loan-details">
-            <h2>Loan Details</h2>
+        <div class="section">
+            <h2 class="section-title">Loan Details</h2>
             <table>
                 <tr>
-                    <th>Loan Type:</th>
+                    <th>Loan Type</th>
                     <td>{{ loan.loan_type }}</td>
                 </tr>
                 <tr>
-                    <th>No of Dependents:</th>
+                    <th>No of Dependents</th>
                     <td>{{ loan.no_of_dependents }}</td>
                 </tr>
                 <tr>
-                    <th>Income Annually:</th>
+                    <th>Income Annually</th>
                     <td>{{ loan.income_annum }}</td>
                 </tr>
                 <!-- Add more loan details as needed -->
             </table>
         </div>
 
-        <div class="sme-details">
-            <h2>SME Details</h2>
-            <p><strong>Name:</strong> {{ loan.sme.name }}</p>
-            <p><strong>Year:</strong> {{ loan.sme.year }}</p>
-            <p><strong>Industry:</strong> {{ loan.sme.industry }}</p>
-            <p><strong>Address:</strong> {{ loan.sme.address }}</p>
-            <p><strong>CIBIL Score:</strong> {{ loan.sme.cibil_score }}</p>
-            <!-- Add more SME details as needed -->
+        <div class="section">
+            <h2 class="section-title">SME Details</h2>
+            <div class="sme-details">
+                <p><strong>Name:</strong> {{ loan.sme.name }}</p>
+                <p><strong>Year:</strong> {{ loan.sme.year }}</p>
+                <p><strong>Industry:</strong> {{ loan.sme.industry }}</p>
+                <p><strong>Address:</strong> {{ loan.sme.address }}</p>
+                <p><strong>CIBIL Score:</strong> {{ loan.sme.cibil_score }}</p>
+                <!-- Add more SME details as needed -->
+            </div>
         </div>
 
-        <div class="status">
-            <h2>Status:</h2>
-            <p>{{ loan.status }}</p>
+        <div class="section">
+            <h2 class="section-title">Status</h2>
+            <div class="status">
+                <p>{{ loan.status }}</p>
+            </div>
         </div>
     </div>
 </body>
