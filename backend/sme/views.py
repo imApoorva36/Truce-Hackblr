@@ -179,3 +179,14 @@ def manual_stage(request):
 
     #loan_application.save()
     return JsonResponse({"message": f"Stage 3: Loan Processing"})
+
+
+def generate_loan_approval_document(request, loan_id):
+    # loan = LoanApplication.objects.get(id=loan_id)
+    # context = {'loan': loan}
+    # html_content = render_to_string('loan_approval_template.html', context)
+    # pdf_file = HTML(string=html_content).write_pdf()
+    # response = HttpResponse(pdf_file, content_type='application/pdf')
+    # response['Content-Disposition'] = f'attachment; filename="loan_approval.pdf"'
+    # return response
+    pass
