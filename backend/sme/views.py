@@ -81,7 +81,7 @@ def sme_reg(request):
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['POST'])
 def sme_update(request):
-    data = request.POST
+    data = json.loads(request.body)
     sme = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
     if sme:
         sme.name = data.get('name', sme.name)
