@@ -19,4 +19,7 @@ next-env.d.ts
 
 
 # backend
-backend/__pycache__
+__pycache__/
+media/
+static/
+db.sqlite3
