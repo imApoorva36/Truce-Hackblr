@@ -10,7 +10,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.3.4",
+    "@mui/material": "^5.15.17",
+    "@mui/x-charts": "^7.4.0",
     "@nivo/bar": "^0.86.0",
     "@nivo/line": "^0.86.0",
     "@nivo/pie": "^0.86.0",

@@ -10,6 +10,7 @@ import {
 	TableBody,
 	Table
 } from '@/components/ui/table'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { useEffect, useState } from 'react'
@@ -17,12 +18,13 @@ import { useAuth } from '@/helpers/auth'
 import { TiTick } from 'react-icons/ti'
 import { ImCross } from 'react-icons/im'
 import { TiEye } from "react-icons/ti"
-import { useRouter } from 'next/navigation'
+import { PieChart } from '@mui/x-charts/PieChart';
 
 export default function Dashboard() {
 	let router = useRouter()
 	let [ sme, setSme ] = useState(null)
 	let [ loans, setLoans ] = useState([])
+	let [ ring, setRing ] = useState(0)
 
 	let { token } = useAuth()
 
@@ -49,6 +51,25 @@ export default function Dashboard() {
 
 		getSme()
 	}, [])
+
+	useEffect(() => {
+		if (!sme) return
+		
+		function setNext () {
+			if (!sme) return
+
+			let cibil = sme.cibil_score
+			let endAngle = cibil * 360/850
+			let difference = endAngle - ring
+
+			if (!difference) return
+			if (difference < 50) difference = 50
+
+			setRing(Math.min((ring + difference/3), endAngle))
+		}
+
+		setTimeout(setNext, 100)
+	}, [sme, ring])
 
 	return (
 		<div className="grid min-h-screen w-full grid-cols-1 gap-6 overflow-hidden bg-background md:grid-cols-[280px_1fr] md:gap-8 md:p-8">
@@ -77,7 +98,7 @@ export default function Dashboard() {
 									SME Not Registered
 								</p>
 								<p className="text-xs text-background">
-									Register now to apply for loans.
+									Register your SME now to apply for loans.
 								</p>
 							</div>
 						)}
@@ -92,15 +113,27 @@ export default function Dashboard() {
 						</Link>
 					)}
 				</div>
-				<div className="flex flex-col items-center justify-center rounded-lg bg-neutral-100 p-6 shadow-sm dark:bg-gray-800">
+				<div className="flex items-center justify-center rounded-lg bg-neutral-100 p-6 shadow-sm dark:bg-gray-800">
 					<div className="relative h-[200px] w-[200px]">
-						<div className="absolute inset-0 flex flex-col items-center justify-center">
-							<p className="text-4xl text-background font-bold">
-								800
-							</p>
-							<p className="text-sm text-background dark:text-gray-400">
-								CIBIL Score
-							</p>
+						<PieChart
+							series={[
+								{
+									data: [{value: 1}],
+									innerRadius: 70,
+									outerRadius: 90,
+									cornerRadius: 2,
+									startAngle: 0,
+									endAngle: -ring,
+									cx: 95,
+									cy: 95,
+								}
+							]}
+							width={200}
+							height={200}
+						/>
+						<div className="absolute h-[200px] w-[200px] top-0 left-0 flex justify-center items-center flex-col text-background">
+							<h1 className="text-4xl font-extrabold text-center">{sme ? sme.cibil_score : "?"}</h1>
+							<h2 className="text-md font-medium text-center">CIBIL Score</h2>
 						</div>
 					</div>
 				</div>
