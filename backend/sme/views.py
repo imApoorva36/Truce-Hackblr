@@ -26,7 +26,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import SME, LoanApplication, BusinessPlanEvaluation
-
+from ai_stuff.rf_test import pred_ml
 from django_nextjs.render import render_nextjs_page_sync
 def index(request):
     return render_nextjs_page_sync(request)
@@ -114,12 +114,26 @@ def sme_update(request):
     else:
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
+from django.forms.models import model_to_dict
+
 def sme_getdata(request):
     if request.method == 'GET':
-        sme_data = SME.objects.filter(user=request.user).values()
-        return JsonResponse({"data": list(sme_data)})
+        sme_data = SME.objects.filter(user=request.user)
+        sme_list = []
+        for sme in sme_data:
+            sme_dict = model_to_dict(sme)
+            # Convert date fields to a JSON-compatible format
+            sme_dict['yoe'] = sme.yoe.strftime('%Y-%m-%d')
+            sme_list.append(sme_dict)
+        return JsonResponse({'data': sme_list})
     else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+# def sme_getdata(request):
+#     if request.method == 'GET':
+#         sme_data = SME.objects.filter(user=request.user)
+#         return JsonResponse({"data": list(sme_data)})
+#     else:
+#         return JsonResponse({"error": "Method not allowed"}, status=405)
 
 def stage1(request):
     if request.method == 'POST':
@@ -128,21 +142,56 @@ def stage1(request):
         # Perform API call or calculation based on CIBIL score
         # Return appropriate response
         if cibil_score >= 700:
+            loan_application = LoanApplication.objects.create(sme=sme)
             return JsonResponse({"message": "Stage 1: CIBIL score check passed"})
         else:
             return JsonResponse({"error": "Stage 1: CIBIL score check failed"})
     else:
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
+def loan_application(request):
+    if request.method == 'POST':
+        # Assuming POST data contains SME registration information
+        data = request.POST
+        user = request.user  # Assuming user is authenticated
+        sme_prof = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
+        loan = LoanApplication.objects.create(
+            sme=sme_prof,
+            # loan_type = models.CharField(choices=[
+            #                             ('term','Term Loan'),
+            #                             ('over_draft', 'Over Draft')
+            #                             ], default='term')
+            no_of_dependents = data.get('no_of_dependents'),
+            income_annum = data.get('income_annum'),
+            residential_assets_value = data.get('residential_assets_value'),
+            commercial_assets_value = data.get('commercial_assets_value'),
+            luxury_assets_value = data.get('luxury_assets_value'),
+            bank_asset_value = data.get('bank_asset_value'),
+            self_employed = data.get('self_employed'),
+            loan_amount = data.get('loan_amount'),
+            loan_term = data.get('loan_term'),
+            business_plan = data.get('business_plan')
+                )
+        return JsonResponse({"message": "Loan Application successful"})
+    else:
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
 def stage2(request):
     if request.method == 'POST':
-        # Assuming you have a machine learning model ready for evaluation
-        # and ready to use in your Django project
+        # loan_application = LoanApplication.objects.create(sme=sme)
+        # form = LoanApplicationForm(request.POST, instance=loan_application)
+        # if form.is_valid():
+        #     form.save()
+        #     # Perform further actions or redirects as needed
+        #     return JsonResponse({"message": "Loan application details saved successfully"})
         # Perform ML evaluation based on model
         # Update LoanApplication status accordingly
+        sme = request.user.sme_profile
         loan_application = request.user.sme_profile.loan_applications.last()  # Assuming SME has multiple loan applications and you want to use the latest one
         # Perform ML evaluation and update LoanApplication status
         # For now, let's assume it's approved
+        sme_data = [sme.a]
+        output = pred_ml()
         loan_application.status = 'approved'
         loan_application.save()
         return JsonResponse({"message": "Stage 2: Loan application approved"})

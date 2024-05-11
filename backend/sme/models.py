@@ -10,12 +10,7 @@ class SME(models.Model):
     industry = models.CharField(max_length=100)
     address = models.CharField(max_length=30)
     cibil_score = models.IntegerField()	
-    residential_assets_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    commercial_assets_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)	
-    luxury_assets_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)	
-    bank_asset_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)	
-    self_employed = models.BooleanField(default=False)
-
+    
 class LoanApplication(models.Model):
     sme = models.ForeignKey(SME, on_delete=models.CASCADE, related_name='loan_applications')
     loan_type = models.CharField(choices=[
@@ -24,8 +19,16 @@ class LoanApplication(models.Model):
                                         ], default='term')
     no_of_dependents = models.IntegerField(default=0)
     income_annum = models.DecimalField(max_digits=15, decimal_places=2)
+    residential_assets_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    commercial_assets_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)	
+    luxury_assets_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)	
+    bank_asset_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)	
+    self_employed = models.BooleanField(default=False)
+
+
     loan_amount = models.DecimalField(max_digits=15, decimal_places=2)
     loan_term = models.IntegerField()
+    repay_prob = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     business_plan = models.TextField(max_length=500) 
     status = models.CharField(max_length=20, choices=[
                                                     ('pending', 'Pending'),
