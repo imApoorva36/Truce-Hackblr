@@ -63,20 +63,15 @@ def register(request):
 @api_view(['POST'])
 def sme_reg(request):
     # Assuming POST data contains SME registration information
-    data = request.POST
+    data = json.loads(request.body)
     user = request.user  # Assuming user is authenticated
     sme = SME.objects.create(
         user=user,
         name=data.get('name'),
-        yoe=data.get('yoe'),
+        year=data.get('year'),
         industry=data.get('industry'),
         address=data.get('address'),
-        cibil_score=data.get('cibil_score'),
-        residential_assets_value=data.get('residential_assets_value', 0),
-        commercial_assets_value=data.get('commercial_assets_value', 0),
-        luxury_assets_value=data.get('luxury_assets_value', 0),
-        bank_asset_value=data.get('bank_asset_value', 0),
-        self_employed=data.get('self_employed', False)
+        cibil_score=data.get('cibil_score')
     )
     return JsonResponse({"message": "SME Registration successful"})
 
@@ -87,7 +82,7 @@ def sme_update(request):
     sme = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
     if sme:
         sme.name = data.get('name', sme.name)
-        sme.yoe = data.get('yoe', sme.yoe)
+        sme.year = data.get('year', sme.year)
         sme.industry = data.get('industry', sme.industry)
         sme.address = data.get('address', sme.address)
         sme.cibil_score = data.get('cibil_score', sme.cibil_score)

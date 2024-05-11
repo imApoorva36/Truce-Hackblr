@@ -32,11 +32,11 @@ export default function SMEForm ({ onSubmit, submitText="Submit", form }) {
 
                 <FormField
                     control={form.control}
-                    name="yoe"
+                    name="year"
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input placeholder="Year of Establishment" type="number" {...field} />
+                                <Input placeholder="Year of Establishment" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

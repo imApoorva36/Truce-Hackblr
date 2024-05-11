@@ -6,10 +6,10 @@ User = get_user_model()
 class SME(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sme_profile')
     name = models.CharField(max_length=255)
-    yoe = models.DateField()
-    industry = models.CharField(max_length=100)
-    address = models.CharField(max_length=30)
-    cibil_score = models.IntegerField()	
+    year = models.IntegerField(default=2000)
+    industry = models.CharField(max_length=100, default=None)
+    address = models.CharField(max_length=30, default=None)
+    cibil_score = models.IntegerField(default=None)
     
 class LoanApplication(models.Model):
     sme = models.ForeignKey(SME, on_delete=models.CASCADE, related_name='loan_applications')

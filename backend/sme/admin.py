@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import SME, LoanApplication, BusinessPlanEvaluation
 
 class SMEAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'name', 'yoe', 'industry', 'address', 'cibil_score')
+    list_display = ('id', 'user', 'name', 'year', 'industry', 'address', 'cibil_score')
 
 class LoanApplicationAdmin(admin.ModelAdmin):
     list_display = ('id', 'sme', 'loan_type', 'no_of_dependents', 'income_annum', 'residential_assets_value', 'commercial_assets_value', 'luxury_assets_value', 'bank_asset_value', 'self_employed', 'loan_amount', 'loan_term', 'repay_prob', 'status', 'created_at', 'updated_at')
