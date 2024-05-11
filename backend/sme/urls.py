@@ -16,4 +16,6 @@ urlpatterns = [
     path('api/auto_stage',views.auto_stage, name="Auto Stage"),
     path('api/manual_stage',views.manual_stage, name="Manual Stage"),
 
+    path('api/print',views.generate_loan_approval_document,name="Print Loan PDF"),
+    
 ]
