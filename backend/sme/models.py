@@ -46,5 +46,5 @@ class BusinessPlanEvaluation(models.Model):
     financial_projections_rating = models.IntegerField()
     management_team_rating = models.IntegerField()
     risk_assessment_rating = models.IntegerField()
-    overall_score = models.DecimalField(max_digits=3, decimal_places=2)
+    overall_score = models.IntegerField()
     feedback = models.TextField(default='')

@@ -25,7 +25,7 @@ def extract_ratings(output_text):
     return ratings
 
 def extract_combined_rating(output_text):
-    pattern = r"Combined rating: (\d+\/10)"
+    pattern = r"Combined\sRating:\s(\d+)"
     match = re.search(pattern, output_text)
     if match:
         return match.group(1)
@@ -59,8 +59,8 @@ def query(business_plan_text):
 
 def scores(business_plan_text):
     output = query(business_plan_text)
-    #output_text = output[0]['generated_text']
-    #print(output_text)
+    output_text = output[0]['generated_text']
+    print(output_text)
     combined_rating = extract_combined_rating(output_text)
     factors = extract_ratings(output_text)
     return combined_rating, factors
