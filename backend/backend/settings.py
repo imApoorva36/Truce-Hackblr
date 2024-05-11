@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,8 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7rmxn8afe)@y!$d@1#akhm5mk-4tgq&+*z$wq$(7tfxrhp-9e@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -109,14 +108,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config('SECRET_KEY')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Replace 'postgres' with your database name
-        'USER': 'postgres.lprgjxehidvgauxdbcsi',  # Replace 'postgres' with your database user
-        'PASSWORD': 'Hariharan@J',  # Replace '[YOUR-PASSWORD]' with your actual password
-        'HOST': 'aws-0-ap-south-1.pooler.supabase.com',
-        'PORT': '5432',
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', cast=int),
     }
 }
 
@@ -155,7 +157,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_URL = '/static/'
 # MEDIA_URL='/media/'
 # if DEBUG:
 #     STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
