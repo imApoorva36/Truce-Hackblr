@@ -53,7 +53,7 @@ export default function Dashboard() {
 	return (
 		<div className="grid min-h-screen w-full grid-cols-1 gap-6 overflow-hidden bg-background md:grid-cols-[280px_1fr] md:gap-8 md:p-8">
 			<div className="flex flex-col gap-6">
-				<div className="flex flex-col gap-5 items-center justify-between rounded-lg bg-neutral-100 px-4 py-10 shadow-sm dark:bg-gray-800">
+				<div className="flex flex-col gap-5 items-center justify-between rounded-lg bg-neutral-100 px-4 py-10 shadow-sm">
 					<div className="flex items-center gap-3">
 						<div
 							className={`rounded-full ${
@@ -83,7 +83,7 @@ export default function Dashboard() {
 						)}
 					</div>
 					{sme ? (
-						<Link href="/">
+						<Link href="/updateSME">
 							<Button variant="outline">Update Details</Button>
 						</Link>
 					) : (
@@ -109,7 +109,7 @@ export default function Dashboard() {
 				<Card>
 					<CardHeader className="flex justify-between items-center flex-row">
 						<CardTitle>Loan Details</CardTitle>
-						<Button variant="secondary">Apply for Loan</Button>
+						<Button variant="outline" className="text-foreground">Apply for Loan</Button>
 					</CardHeader>
 					<CardContent>
 						<Table>

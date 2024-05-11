@@ -35,8 +35,12 @@ export default function CompleteRegistration () {
             })
         })
 
-        // let data = await res.json()
-        console.log(res)
+        if (!res.ok) {
+            alert("Error creating SME")
+            return
+        }
+
+        router.push("/dashboard")
     }
 
     return (
