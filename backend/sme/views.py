@@ -106,56 +106,35 @@ def sme_getdata(request):
     serialized_data = SMESerializer(sme_data, many=True)
     return Response(serialized_data.data)
 
-@permission_classes([IsAuthenticated])  # Add this line
-@api_view(['POST'])
-def stage1(request):
 
-    sme = request.user.sme_profile
-    cibil_score = sme.cibil_score  # Assuming CIBIL score is stored in SME model
-    # Perform API call or calculation based on CIBIL score
-    # Return appropriate response
-    if cibil_score >= 700:
-        loan_application = LoanApplication.objects.create(sme=sme)
-        return JsonResponse({"message": "Stage 1: CIBIL score check passed"})
-    else:
-        return JsonResponse({"error": "Stage 1: CIBIL score check failed"})
-   
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['POST'])
-def loan_application(request):
-    # Assuming POST data contains SME registration information
-    data = request.POST
-    user = request.user  # Assuming user is authenticated
-    sme_prof = request.user.sme_profile  # Assuming user is authenticated and associated with an SME profile
-    loan = LoanApplication.objects.create(
-        sme=sme_prof,
-        no_of_dependents = data.get('no_of_dependents'),
-        income_annum = data.get('income_annum'),
-        #cibil_score = sme_prof.cibil_score,
-        residential_assets_value = data.get('residential_assets_value'),
-        commercial_assets_value = data.get('commercial_assets_value'),
-        luxury_assets_value = data.get('luxury_assets_value'),
-        bank_asset_value = data.get('bank_asset_value'),
-        self_employed = data.get('self_employed'),
-        loan_amount = data.get('loan_amount'),
-        loan_term = data.get('loan_term'),
-        business_plan = data.get('business_plan')
-            )
-    # request.session['loan_application_id'] = loan.id
-    return JsonResponse({"message": "Loan Application successful"})
-  
-   
-@permission_classes([IsAuthenticated])  # Add this line
-@api_view(['POST'])
-def stage2(request):
-
-    # Perform ML evaluation based on model
-    # Update LoanApplication status accordingly
+def approval_stage(request):
+    
     sme_instance = request.user.sme_profile
+    data = request.POST
+    cibil_score = sme_instance.cibil_score
+    ### stage 1 ###
+    if cibil_score >= 700:
+        loan = LoanApplication.objects.create(
+            sme=sme_instance,
+            no_of_dependents = data.get('no_of_dependents'),
+            income_annum = data.get('income_annum'),
+            #cibil_score = sme_prof.cibil_score,
+            residential_assets_value = data.get('residential_assets_value'),
+            commercial_assets_value = data.get('commercial_assets_value'),
+            luxury_assets_value = data.get('luxury_assets_value'),
+            bank_asset_value = data.get('bank_asset_value'),
+            self_employed = data.get('self_employed'),
+            loan_amount = data.get('loan_amount'),
+            loan_term = data.get('loan_term'),
+            business_plan = data.get('business_plan')
+                )
+    else:
+        return JsonResponse({"message": "SME Registration Unsuccessful"})
+    ### stage 2 ###
     loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
 
-    # Perform ML evaluation and update LoanApplication status
-    # For now, let's assume it's approved
     sme_data = [loan_application.no_of_dependents, 
                 loan_application.income_annum, 
                 loan_application.loan_amount, 
@@ -172,10 +151,8 @@ def stage2(request):
         loan_application.status = 'ml_approved'
     else:
         loan_application.status = 'ml_rejected'
-
-
-    loan_application.save()
-    return JsonResponse({"message": f"Stage 2: Loan application approved {output}"})
+        return JsonResponse({"message": f"Stage 2: Auto-Verification Failed -> {output}"})
+    
 
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['POST'])
