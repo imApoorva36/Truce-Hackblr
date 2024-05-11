@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Approval Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .loan-details {
+            margin-bottom: 20px;
+        }
+        .loan-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .loan-details th, .loan-details td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan Approval Document</h1>
+        
+        <div class="loan-details">
+            <h2>Loan Details</h2>
+            <table>
+                <tr>
+                    <th>Loan Type:</th>
+                    <td>{{ loan.loan_type }}</td>
+                </tr>
+                <tr>
+                    <th>No of Dependents:</th>
+                    <td>{{ loan.no_of_dependents }}</td>
+                </tr>
+                <tr>
+                    <th>Income Annually:</th>
+                    <td>{{ loan.income_annum }}</td>
+                </tr>
+                <!-- Add more loan details as needed -->
+            </table>
+        </div>
+
+        <div class="sme-details">
+            <h2>SME Details</h2>
+            <p><strong>Name:</strong> {{ loan.sme.name }}</p>
+            <p><strong>Year:</strong> {{ loan.sme.year }}</p>
+            <p><strong>Industry:</strong> {{ loan.sme.industry }}</p>
+            <p><strong>Address:</strong> {{ loan.sme.address }}</p>
+            <p><strong>CIBIL Score:</strong> {{ loan.sme.cibil_score }}</p>
+            <!-- Add more SME details as needed -->
+        </div>
+
+        <div class="status">
+            <h2>Status:</h2>
+            <p>{{ loan.status }}</p>
+        </div>
+    </div>
+</body>
+</html>
