@@ -14,15 +14,16 @@ class SME(models.Model):
 class LoanApplication(models.Model):
     sme = models.ForeignKey(SME, on_delete=models.CASCADE, related_name='loan_applications')
     amount = models.DecimalField(max_digits=15, decimal_places=2)
-    purpose = models.TextField()
-    business_plan = models.FileField(upload_to='business_plans/')
+    address = models.CharField(max_length=30)
+    #purpose = models.TextField()
+    #business_plan = models.FileField(upload_to='') # set a path for plans?
     status = models.CharField(max_length=20, choices=[
-        ('pending', 'Pending'),
-        ('ml_approved', 'ML Approved'),
-        ('ml_rejected', 'ML Rejected'),
-        ('approved', 'Approved'),
-        ('rejected', 'Rejected')
-    ], default='pending')
+                                                    ('pending', 'Pending'),
+                                                    ('ml_approved', 'ML Approved'),
+                                                    ('ml_rejected', 'ML Rejected'),
+                                                    ('approved', 'Approved'),
+                                                    ('rejected', 'Rejected')
+                                                ], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
