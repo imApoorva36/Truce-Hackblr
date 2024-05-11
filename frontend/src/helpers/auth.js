@@ -1,14 +1,14 @@
 "use client"
 
 import Cookies from "js-cookie"
-import { createContext, useState, useEffect } from "react"
+import { createContext, useState, useEffect, useContext } from "react"
 
 
 export let AuthContext = createContext(null)
 
 export function AuthContextProvider ({ children }) {
     let [ username, setUsername ] = useState(Cookies.get('username'))
-    let [ token, setToken ] = useState(Cookies.set('token'))
+    let [ token, setToken ] = useState(Cookies.get('token'))
 
     function login (username, token) {
         setUsername(username)
@@ -30,3 +30,5 @@ export function AuthContextProvider ({ children }) {
         </AuthContext.Provider>
     )
 }
+
+export let useAuth = () => useContext(AuthContext)
