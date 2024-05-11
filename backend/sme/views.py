@@ -161,7 +161,9 @@ def auto_stage(request):
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['GET'])
 def manual_stage(request):
+    print(request.user)
     sme_instance = request.user.sme_profile
+
     loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
     combined_score, factor_score = llm_score(loan_application.business_plan)
 
