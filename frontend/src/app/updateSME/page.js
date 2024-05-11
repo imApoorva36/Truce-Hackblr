@@ -66,7 +66,7 @@ export default function UpdateSme () {
     }
 
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-[calc(100vh_-_96px)]">
             <div className="max-w-[700px] mb-10">
                 <h1 className="text-xl font-semibold mb-6">Update the details of your Small or Medium Scale Enterprise</h1>
                 <SMEForm submitText="Update Details" form={form} onSubmit={handleSubmit} />

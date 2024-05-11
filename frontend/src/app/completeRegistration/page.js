@@ -44,7 +44,7 @@ export default function CompleteRegistration () {
     }
 
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-[calc(100vh_-_96px)]">
             <div className="max-w-[700px] mb-10">
                 <h1 className="text-xl font-semibold mb-6">Register your Small or Medium Scale Enterprise on our platform!</h1>
                 <SMEForm submitText="Create SME" form={form} onSubmit={handleSubmit} />

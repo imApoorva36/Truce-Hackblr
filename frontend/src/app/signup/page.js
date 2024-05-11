@@ -57,7 +57,7 @@ export default function Signup () {
     }
 
     return (
-        <main className="h-screen flex flex-col items-center justify-center">
+        <main className="h-[calc(100vh_-_96px)] flex flex-col items-center justify-center pb-10">
             <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
 
             <div className="max-w-64">

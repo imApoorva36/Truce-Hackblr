@@ -72,7 +72,7 @@ export default function Dashboard() {
 	}, [sme, ring])
 
 	return (
-		<div className="grid min-h-screen w-full grid-cols-1 gap-6 overflow-hidden bg-background md:grid-cols-[280px_1fr] md:gap-8 md:p-8">
+		<div className="grid min-h-[calc(100vh_-_96px)] w-full grid-cols-1 gap-6 overflow-hidden bg-background md:grid-cols-[280px_1fr] md:gap-8 md:p-8">
 			<div className="flex flex-col gap-6">
 				<div className="flex flex-col gap-5 items-center justify-between rounded-lg bg-neutral-100 px-4 py-10 shadow-sm">
 					<div className="flex items-center gap-3">
