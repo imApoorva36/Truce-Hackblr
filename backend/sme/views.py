@@ -109,7 +109,7 @@ def sme_getdata(request):
 
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['POST'])
-def approval_stage(request):
+def auto_stage(request):
     
     sme_instance = request.user.sme_profile
     data = request.POST
@@ -130,6 +130,8 @@ def approval_stage(request):
             loan_term = data.get('loan_term'),
             business_plan = data.get('business_plan')
                 )
+        loan_application.save()
+
     else:
         return JsonResponse({"message": "SME Registration Unsuccessful"})
     ### stage 2 ###
@@ -147,6 +149,7 @@ def approval_stage(request):
                 int(loan_application.self_employed)]
     output = pred_ml(sme_data)
     loan_application.repay_prob = output
+    loan_application.save()
     if(output >= 0.8):
         loan_application.status = 'ml_approved'
         return JsonResponse({"message": f"Stage 2: Auto-Verification Approved -> {output}"})
@@ -157,7 +160,7 @@ def approval_stage(request):
 
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['GET'])
-def stage3(request):
+def manual_stage(request):
     sme_instance = request.user.sme_profile
     loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
     combined_score, factor_score = llm_score(loan_application.business_plan)
@@ -170,8 +173,6 @@ def stage3(request):
                                                     risk_assessment_rating = factor_score['Risk Assessment and Mitigation'],
                                                     overall_score = combined_score
                                                     )
-
-    
     # Update LoanApplication status based on manual approval
 
     #loan_application.save()
