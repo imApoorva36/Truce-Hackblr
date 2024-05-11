@@ -14,20 +14,23 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function Signup () {
+    let router = useRouter()
+    let { login, username, token } = useAuth()
+
+    if (username) router.push("/dashboard")
+
     let form = useForm({ 
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: null,
-            password: null
+            email: "",
+            password: ""
         }
     })
 
-    let { login, username, token } = useAuth()
-
-
-    console.log("From comp: ", username, token)
     async function onSubmit (e) {
         let { email, password } = form.getValues()
         
@@ -59,7 +62,7 @@ export default function Signup () {
 
             <div className="max-w-64">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center gap-4 mb-10">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 mb-3">
                         <FormField
                             control={form.control}
                             name="email"
@@ -87,6 +90,7 @@ export default function Signup () {
                         <Button type="submit" className="w-full h-10 mt-2">Submit</Button>
                     </form>
                 </Form>
+                <p>Already have an account? <Link href={"/login"} className="underline">Log In!</Link></p>
             </div>
         </main>
     )

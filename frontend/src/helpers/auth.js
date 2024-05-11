@@ -20,8 +20,12 @@ export function AuthContextProvider ({ children }) {
     }
 
     useEffect(() => {
-        Cookies.set('username', username)
-        Cookies.set('token', token)
+        if (username) Cookies.set('username', username)
+        else Cookies.remove('username')
+
+        if (token) Cookies.set('token', token)
+        else Cookies.remove('token')
+    
     }, [username, token])
 
     return (
