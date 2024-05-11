@@ -26,7 +26,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import SME, LoanApplication, BusinessPlanEvaluation
-from ai_stuff.rf_test import pred_ml
+# from ai_stuff.rf_test import pred_ml
 from django_nextjs.render import render_nextjs_page_sync
 def index(request):
     return render_nextjs_page_sync(request)

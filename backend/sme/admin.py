@@ -1,6 +1,6 @@
 from django.contrib import admin
-# from .models import Team
-# class TeamAdmin(admin.ModelAdmin):
-#     list_display = ('id','user', 'name', 'contact', 'member1','member2','member3')
+from .models import SME,LoanApplication,BusinessPlanEvaluation
 
-# admin.site.register(Team,TeamAdmin)
+admin.site.register(SME)
+admin.site.register(LoanApplication)
+admin.site.register(BusinessPlanEvaluation)
