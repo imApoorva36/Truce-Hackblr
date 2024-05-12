@@ -19,12 +19,14 @@ import { TiTick } from 'react-icons/ti'
 import { ImCross } from 'react-icons/im'
 import { TiEye } from "react-icons/ti"
 import { PieChart } from '@mui/x-charts/PieChart';
+import { LoanStatus } from '@/components/LoanStatus'
 
 export default function Dashboard() {
 	let router = useRouter()
 	let [ sme, setSme ] = useState(null)
 	let [ loans, setLoans ] = useState([])
 	let [ ring, setRing ] = useState(0)
+	let [ loanOpen, setLoanOpen ] = useState(-1)
 
 	let { token } = useAuth()
 
@@ -46,7 +48,19 @@ export default function Dashboard() {
 		}
 
 		async function getLoans () {
-			// let res = await fetch("http://127.0.0.1:8000/api/smedata")
+			let res = await fetch("http://127.0.0.1:8000/api/loandata", {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
+
+			if (!res.ok) {
+				alert("Error fetching loans")
+				return
+			}
+
+			let data = await res.json()
+			setLoans(data)
 		}
 
 		getSme()
@@ -72,6 +86,7 @@ export default function Dashboard() {
 	}, [sme, ring])
 
 	return (
+		<>
 		<div className="grid min-h-[calc(100vh_-_96px)] w-full grid-cols-1 gap-6 overflow-hidden bg-background md:grid-cols-[280px_1fr] md:gap-8 md:p-8">
 			<div className="flex flex-col gap-6">
 				<div className="flex flex-col gap-5 items-center justify-between rounded-lg bg-neutral-100 px-4 py-10 shadow-sm">
@@ -138,7 +153,7 @@ export default function Dashboard() {
 					</div>
 				</div>
 			</div>
-			<div className="flex flex-col gap-6">
+			<div className="flex flex-col gap-6 text-center">
 				<Card>
 					<CardHeader className="flex justify-between items-center flex-row">
 						<CardTitle>Loan Details</CardTitle>
@@ -148,47 +163,52 @@ export default function Dashboard() {
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead>Loan ID</TableHead>
-									<TableHead>Amount</TableHead>
-									<TableHead>Status</TableHead>
-									<TableHead>Submitted On</TableHead>
-									<TableHead>Action</TableHead>
+									<TableHead className="text-center">Loan ID</TableHead>
+									<TableHead className="text-center">Amount</TableHead>
+									<TableHead className="text-center">Status</TableHead>
+									<TableHead className="text-center">Submitted On</TableHead>
+									<TableHead className="text-center">Action</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
+								{loans.map((d,i) => (
 								<TableRow>
-									<TableCell>
-										<Link
-											className="font-medium text-background"
-											href="#"
-										>
-											#12345
-										</Link>
+									<TableCell className="font-mediun text-background">
+										#{d.id}
 									</TableCell>
-									<TableCell>₹50,000</TableCell>
+									<TableCell>₹{d.loan_amount}</TableCell>
 									<TableCell>
 										<Badge variant="success">
-											Approved
+											{d.status}
 										</Badge>
 									</TableCell>
-									<TableCell>2023-04-15</TableCell>
+									<TableCell>{d.created_at}</TableCell>
 									<TableCell>
 										<Button
 											size="icon"
 											className="bg-neutral-100 border-background border hover:bg-neutral-200"
+											onClick = {() => setLoanOpen(i)}
 										>
 											<TiEye size={20} />
-											<span className="sr-only">
-												View
-											</span>
 										</Button>
 									</TableCell>
 								</TableRow>
+								))}
 							</TableBody>
 						</Table>
 					</CardContent>
 				</Card>
 			</div>
 		</div>
+		{
+			loanOpen >= 0 ? 
+			<div className="h-screen w-full bg-black/30 flex justify-center items-center fixed top-0 left-0 z-50" onClick={() => setLoanOpen(-1)}>
+				<div className="bg-white text-secondary rounded-lg shadow max-h-[80vh] overflow-scroll p-10" onClick={e => e.stopPropagation()}>
+					<LoanStatus loan={loans[loanOpen]} />
+				</div>
+			</div> 
+			: null
+		}
+		</>
 	)
 }

@@ -16,7 +16,7 @@ function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body className={`${inter.className} mt-24`}>
-				<div className=" fixed w-full h-20 top-0 left-0 flex justify-between items-center px-10 shadow-foreground shadow-sm bg-background">
+				<div className=" fixed w-full h-20 top-0 left-0 flex justify-between items-center px-10 shadow-foreground shadow-sm bg-background z-40">
 					<Link href="/">
 						<h1 className='text-3xl font-bold'>QuickCredit</h1>
 					</Link>

@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.17",
     "@mui/x-charts": "^7.4.0",
     "@nivo/bar": "^0.86.0",
+    "@nivo/heatmap": "^0.86.0",
     "@nivo/line": "^0.86.0",
     "@nivo/pie": "^0.86.0",
     "@nivo/scatterplot": "^0.86.0",
