@@ -178,6 +178,7 @@ def auto_stage(request):
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['GET'])
 def manual_stage(request):
+    ### stage 3 ###
     print(request.user)
     sme_instance = request.user.sme_profile
 
@@ -197,6 +198,46 @@ def manual_stage(request):
     #loan_application.save()
     return JsonResponse({"message": f"Stage 3: Loan Processing"})
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_loan_status(request):
+    sme_instance = request.user.sme_profile
+    loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
+
+    if not loan_application:
+        return JsonResponse({"error": "No loan application found for this user."}, status=404)
+
+    status = loan_application.status
+    stage = None
+    business_plan_evaluation = None
+
+    if status == 'ml_approved' or status == 'ml_rejected':
+        stage = 2
+    elif status in ['approved', 'rejected']:
+        stage = 3
+        try:
+            business_plan_evaluation = BusinessPlanEvaluation.objects.get(loan_application=loan_application)
+        except BusinessPlanEvaluation.DoesNotExist:
+            pass
+
+    response_data = {
+        "loan_application_id": loan_application.id,
+        "status": status,
+        "stage": stage,
+    }
+
+    if business_plan_evaluation:
+        business_plan_evaluation_data = {
+            "market_analysis_rating": business_plan_evaluation.market_analysis_rating,
+            "business_model_rating": business_plan_evaluation.business_model_rating,
+            "financial_projections_rating": business_plan_evaluation.financial_projections_rating,
+            "management_team_rating": business_plan_evaluation.management_team_rating,
+            "risk_assessment_rating": business_plan_evaluation.risk_assessment_rating,
+            "overall_score": business_plan_evaluation.overall_score,
+        }
+        response_data["business_plan_evaluation"] = business_plan_evaluation_data
+
+    return JsonResponse(response_data)
 
 def generate_loan_approval_document(request, loan_id):
     loan = LoanApplication.objects.get(id=loan_id)
