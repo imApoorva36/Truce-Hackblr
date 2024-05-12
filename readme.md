@@ -1,37 +1,38 @@
-# Financial Inclusion Platform
+# QuickCredit
+A platform built to revolutionise SME loan application processes
 
 ## Overview
 
-This project aims to address the challenge of financial inclusion for small and medium enterprises (SMEs) in Bangalore by providing them with access to small loans through a simplified platform. The platform facilitates the loan application process, review, and approval, thereby fostering innovation and supporting the local entrepreneurial ecosystem.
+QuickCredit aims to address the challenge of financial inclusion for small and medium enterprises (SMEs) by providing them with access to small loans through a simplified platform. The platform facilitates the loan application process, review, and approval. In our project we have leveraged generative AI and machine learning to analyze the business plan and loan application.  We have a 3 stage workflow which includes Automated and Manual checks leading to a successful loan application. We also generate a loan approval document for the user containing his/her loan details.
 
 ## Submission Artefact
 
-### 1️⃣ Project’s GitHub Repo Link
+### 1️⃣ Hackathon track
 
-[Link to GitHub Repo](https://github.com/imApoorva36/Truce-Hackblr)
+- **Financial Inclusion**
 
-### 2️⃣ Project Details
+### 2️⃣ Tech Stacks and tools Used
 
-- **Project Description:** This platform streamlines the process for SMEs to apply for small loans, providing a user-friendly interface for loan application submission, review, and approval.
-- **Hackathon Track:** Financial Inclusion
-- **Tech Stack:** Django (for backend), Next.js (for frontend), scikit-learn (for AI loan approval), SQL (for database)
+- **Django** (for backend)
+- **Next.js** (for frontend)
+- **Shadcn UI** (for styling)
+- **scikit-learn** (for AI loan approval)
+- **hugging-face llama3** (for business plan evaluation)
+- **Supabase Postgres Database** (for database)
+- **JWT Auth** (for token authorisation)
 
-### 3️⃣ Pitch Deck (in pdf)
+### 3️⃣ Pitch Deck
 
-The pitch deck provides an overview of the project, its technical implementation, and future roadmap. 
-
-### 4️⃣ Project Demo Link
-
-[Link to Project Demo](https://yourprojectdemo.com)
+The pitch deck provides an overview of the project, its technical implementation, and future roadmap. Please refer the attached canva link for the detailed ppt on the same.
+!!!!!!!!!!!!ATTACH A PPT HERE.
 
 ## Project Structure
 
 The project is structured as follows:
 
-- **/backend**: Contains the Django backend application files.
+- **/backend**: Contains the Django Rest Framework backend application files.
 - **/frontend**: Stores Next.js frontend files.
-- **/data**: Includes datasets and any other data files used for AI loan approval.
-- **/docs**: Documentation files including this README.md.
+- **/ai_stuff**: Includes model files and scripts for the automated loan approval.
 
 ## Usage Instructions
 
@@ -41,38 +42,40 @@ To run the project locally, follow these steps:
 `git clone https://github.com/imApoorva36/Truce-Hackblr`
 
 2. Navigate to the project directory:
-`cd financial-inclusion-platform`
+`cd backend`
 
 3. Install dependencies:
 `pip install -r requirements.txt`
 
 4. Set up the database:
+`python manage.py makemigrations`
 `python manage.py migrate`
 
-5. Run the Django backend:
+6. Run the Django backend:
 `python manage.py runserver`
 
-6. Navigate to the frontend directory:
+7. Now let's navigate to the frontend directory:
 `cd frontend`
 
-7. Install frontend dependencies:
+8. Install frontend dependencies:
 `npm install`
 
-8. Run the Next.js frontend:
+9. Run the Next.js frontend:
 `npm run dev`
 
-9. Access the application in your web browser at `http://localhost:3000`.
+10. Access the application in your web browser at `http://localhost:3000`.
 
-## Dependencies
+## Major Dependencies
 
-- Django==3.2.4
+- Django==5.0.6
+- django-nextjs==2.4.0
+- django-rest-framework==0.1.0
+- djangorestframework-simplejwt==5.3.1
 - Next.js==11.1.2
-- scikit-learn==0.24.2
-- SQLALchemy==1.4.22
-
-## Contributing
-
-Contributions to the project are welcome! Please fork the repository, make your changes, and submit a pull request.
+- scikit-learn==1.2.2
+- python-decouple==3.8
+- requests==2.31.0
+- PyJWT==2.8.0
 
 ## License
 
