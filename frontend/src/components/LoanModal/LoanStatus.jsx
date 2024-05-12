@@ -6,6 +6,8 @@ import { FaQuestion } from "react-icons/fa";
 import { useEffect, useState } from "react"
 import { PieChart } from '@mui/x-charts/PieChart';
 import LoanCharts from "./LoanCharts"
+import Link from "next/link"
+import { Button } from "../ui/button"
 
 export function LoanStatus({ loan }) {
 	let [ ring, setRing ] = useState(0)
@@ -54,7 +56,7 @@ export function LoanStatus({ loan }) {
 
   return (
     (<div className="flex flex-col gap-8 w-full max-w-4xl mx-auto">
-      <h1 className="text-lg font-semibold">Loan #{loan.id}: Loan Application {titleText}</h1>
+      <h1 className="text-lg font-semibold">Loan #{loan.loan_application_id}: Loan Application {titleText}</h1>
       <div className="flex items-start justify-center gap-8">
         <div className="flex flex-col items-center gap-2 relative w-60">
           <div className="bg-gray-100 rounded-full p-3 dark:bg-gray-800">
@@ -128,6 +130,15 @@ export function LoanStatus({ loan }) {
           <h1 className="text-xl font-bold">Business Proposal Analysis</h1>
           <LoanCharts business_plan_evaluation={loan.business_plan_evaluation}/>
         </> 
+        : null
+      }
+      {
+        loan.status == "approved" ?
+        <div className="flex justify-end gap-4">
+          <Link href={`http://localhost:8000/api/print/${loan.loan_application_id}`}>
+              <Button variant="secondary">Print Confirmation</Button>
+          </Link>
+        </div>
         : null
       }
     </div>)

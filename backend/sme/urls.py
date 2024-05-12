@@ -22,6 +22,6 @@ urlpatterns = [
     path('api/bank/deny/<int:loan_application_id>', views.bank_reject, name='bank_deny'),
 
 
-    path('api/print/<int:loan_id>/',views.generate_loan_approval_document,name="Print Loan PDF"),
+    path('api/print/<int:loan_id>',views.generate_loan_approval_document,name="Print Loan PDF"),
     
 ]

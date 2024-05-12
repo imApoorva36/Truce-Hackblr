@@ -175,7 +175,7 @@ export default function Dashboard() {
 								{loans.map((d,i) => (
 								<TableRow>
 									<TableCell className="font-mediun text-background">
-										#{d.id}
+										#{d.loan_application_id}
 									</TableCell>
 									<TableCell>₹{d.loan_amount}</TableCell>
 									<TableCell>

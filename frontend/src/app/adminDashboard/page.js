@@ -61,6 +61,7 @@ export default function Admin () {
 							<TableHeader>
 								<TableRow>
 									<TableHead className="text-center">Loan ID</TableHead>
+									<TableHead className="text-center">Enterprise Name</TableHead>
 									<TableHead className="text-center">Amount</TableHead>
 									<TableHead className="text-center">Status</TableHead>
 									<TableHead className="text-center">Submitted On</TableHead>
@@ -72,6 +73,9 @@ export default function Admin () {
 								<TableRow>
 									<TableCell className="font-mediun text-background">
 										#{d.loan_application_id}
+									</TableCell>
+									<TableCell className="font-mediun text-background">
+										{d.name}
 									</TableCell>
 									<TableCell>₹{d.loan_amount}</TableCell>
 									<TableCell>
