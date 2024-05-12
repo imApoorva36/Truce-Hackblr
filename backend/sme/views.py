@@ -124,9 +124,9 @@ def loan_get_all_data(request):
         business_plan_evaluation = None
         loan_amount = loan_application.loan_amount
         repayment_prob = loan_application.repay_prob
-        if status == 'ml_approved' or status == 'ml_rejected':
+        if status == 'ml_rejected':
             pass
-        elif status in ['approved', 'rejected']:
+        elif status in ['ml_approved', 'rejected']:
             try:
                 business_plan_evaluation = BusinessPlanEvaluation.objects.get(loan_application=loan_application)
             except BusinessPlanEvaluation.DoesNotExist:
@@ -200,23 +200,14 @@ def auto_stage(request):
     if(output >= 0.8):
         loan_application.status = 'ml_approved'
         loan_application.save()
-        return JsonResponse({"message": f"Stage 2: Auto-Verification Approved -> {output}"})
     else:
         loan_application.status = 'ml_rejected'
         loan_application.save()
         return JsonResponse({"message": f"Stage 2: Auto-Verification Failed -> {output}"})
     
-
-@permission_classes([IsAuthenticated])  # Add this line
-@api_view(['GET'])
-def manual_stage(request):
     ### stage 3 ###
-    print(request.user)
-    sme_instance = request.user.sme_profile
 
-    loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
     combined_score, factor_score = llm_score(loan_application.business_plan)
-
     bp_eval = BusinessPlanEvaluation.objects.create(loan_application = loan_application,
                                                     market_analysis_rating = factor_score['Market Analysis and Opportunity'],
                                                     business_model_rating = factor_score['Business Model and Strategy'],
@@ -225,9 +216,7 @@ def manual_stage(request):
                                                     risk_assessment_rating = factor_score['Risk Assessment and Mitigation'],
                                                     overall_score = combined_score
                                                     )
-    # Update LoanApplication status based on manual approval
-
-    #loan_application.save()
+    
     return JsonResponse({"message": f"Stage 3: Loan Processing"})
 
 @api_view(['GET'])
@@ -247,14 +236,13 @@ def get_loan_status(request):
         business_plan_evaluation = None
         loan_amount = loan_application.loan_amount
         repayment_prob = loan_application.repay_prob
-        if status == 'ml_approved' or status == 'ml_rejected':
-            stage = 2
-        elif status in ['approved', 'rejected']:
+        if status == 'ml_approved' or status == 'rejected':
             stage = 3
             try:
                 business_plan_evaluation = BusinessPlanEvaluation.objects.get(loan_application=loan_application)
             except BusinessPlanEvaluation.DoesNotExist:
                 pass
+            
 
         loan_data = {
             "loan_application_id": loan_application.id,
@@ -278,6 +266,81 @@ def get_loan_status(request):
         response_data.append(loan_data)
 
     return JsonResponse(response_data, safe=False)
+
+@permission_classes([IsAuthenticated])  # Add this line
+@api_view(['GET'])
+def bank_approval(request):
+    loan_applications = LoanApplication.objects.all()
+    if not loan_applications:
+        return JsonResponse({"error": "No loan application found."}, status=404)
+
+    response_data = []
+
+    for loan_application in loan_applications:
+        status = loan_application.status
+        stage = None
+        business_plan_evaluation = None
+        loan_amount = loan_application.loan_amount
+        repayment_prob = loan_application.repay_prob
+      
+        if status in ['ml_approved', 'rejected','approved']:
+            stage = 3
+            try:
+                business_plan_evaluation = BusinessPlanEvaluation.objects.get(loan_application=loan_application)
+            except BusinessPlanEvaluation.DoesNotExist:
+                pass
+
+        loan_data = {
+            "loan_application_id": loan_application.id,
+            "status": status,
+            "stage": stage,
+            "loan_amount": loan_amount,
+            "repay_prob": repayment_prob,
+            "created_on": loan_application.created_at
+        }
+
+        if business_plan_evaluation:
+            business_plan_evaluation_data = {
+                "market_analysis_rating": business_plan_evaluation.market_analysis_rating,
+                "business_model_rating": business_plan_evaluation.business_model_rating,
+                "financial_projections_rating": business_plan_evaluation.financial_projections_rating,
+                "management_team_rating": business_plan_evaluation.management_team_rating,
+                "risk_assessment_rating": business_plan_evaluation.risk_assessment_rating,
+                "overall_score": business_plan_evaluation.overall_score,
+            }
+            loan_data["business_plan_evaluation"] = business_plan_evaluation_data
+
+        response_data.append(loan_data)
+
+    return JsonResponse(response_data, safe=False)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def bank_approve(request, loan_application_id):
+    try:
+        loan_application = LoanApplication.objects.get(id=loan_application_id)
+    except LoanApplication.DoesNotExist:
+        return Response({"error": "Loan application not found."}, status=404)
+
+    # Update the status of the loan application to 'approved'
+    loan_application.status = 'approved'
+    loan_application.save()
+
+    return Response({"message": "Loan application approved successfully."}, status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def bank_reject(request, loan_application_id):
+    try:
+        loan_application = LoanApplication.objects.get(id=loan_application_id)
+    except LoanApplication.DoesNotExist:
+        return Response({"error": "Loan application not found."}, status=404)
+
+    # Update the status of the loan application to 'denied'
+    loan_application.status = 'rejected'
+    loan_application.save()
+
+    return Response({"message": "Loan application denied successfully."}, status=200)
 
 
 def generate_loan_approval_document(request, loan_id):
