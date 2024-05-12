@@ -213,7 +213,8 @@ def get_loan_status(request):
         status = loan_application.status
         stage = None
         business_plan_evaluation = None
-
+        loan_amount = loan_application.loan_amount
+        repayment_prob = loan_application.repay_prob
         if status == 'ml_approved' or status == 'ml_rejected':
             stage = 2
         elif status in ['approved', 'rejected']:
@@ -227,6 +228,8 @@ def get_loan_status(request):
             "loan_application_id": loan_application.id,
             "status": status,
             "stage": stage,
+            "loan_amount": loan_amount,
+            "repay_prob": repayment_prob
         }
 
         if business_plan_evaluation:
