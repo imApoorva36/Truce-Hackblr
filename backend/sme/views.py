@@ -107,7 +107,7 @@ def sme_getdata(request):
 def auto_stage(request):
     
     sme_instance = request.user.sme_profile
-    data = request.POST
+    data = json.loads(request.body)
     cibil_score = sme_instance.cibil_score
     ### stage 1 ###
     if cibil_score >= 700:
