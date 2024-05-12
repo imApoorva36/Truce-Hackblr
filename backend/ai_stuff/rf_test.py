@@ -10,7 +10,7 @@ def pred(values):
         classifier = pickle.load(f)
 
     #values = np.array([0,4500000, 17500000, 10, 500,52343223,523843,5292939,5000000,0])
-    return classifier.predict_proba(np.array(values).reshape(1, -1))[0][0]
+    return classifier.predict_proba(np.array(values).reshape(1, -1))[0][1]
     
 
 if __name__ == "__main__":

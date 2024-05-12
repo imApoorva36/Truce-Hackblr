@@ -101,6 +101,19 @@ def sme_getdata(request):
     serialized_data = SMESerializer(sme_data, many=True)
     return Response(serialized_data.data)
 
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def loan_getdata(request):
+    loan_data = LoanApplication.objects.filter(sme=request.user.sme_profile)
+    serialized_data = LoanApplicationSerializer(loan_data, many=True)
+    return Response(serialized_data.data)
+
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def loan_get_all_data(request):
+    loan_data = LoanApplication.objects.all()
+    serialized_data = LoanApplicationSerializer(loan_data, many=True)
+    return Response(serialized_data.data)
 
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['POST'])
@@ -110,12 +123,12 @@ def auto_stage(request):
     data = json.loads(request.body)
     cibil_score = sme_instance.cibil_score
     ### stage 1 ###
-    if cibil_score >= 700:
-        loan = LoanApplication.objects.create(
+    if cibil_score >= 100:
+        loan_application = LoanApplication.objects.create(
             sme=sme_instance,
             no_of_dependents = data.get('no_of_dependents'),
             income_annum = data.get('income_annum'),
-            cibil_score = sme_instance.cibil_score,
+            # cibil_score = sme_instance.cibil_score,
             residential_assets_value = data.get('residential_assets_value'),
             commercial_assets_value = data.get('commercial_assets_value'),
             luxury_assets_value = data.get('luxury_assets_value'),
@@ -130,7 +143,6 @@ def auto_stage(request):
     else:
         return JsonResponse({"message": "SME Registration Unsuccessful"})
     ### stage 2 ###
-    loan_application = LoanApplication.objects.filter(sme=sme_instance).order_by('-created_at').first()
 
     sme_data = [loan_application.no_of_dependents, 
                 loan_application.income_annum, 
@@ -176,12 +188,6 @@ def manual_stage(request):
 
     #loan_application.save()
     return JsonResponse({"message": f"Stage 3: Loan Processing"})
-
-@permission_classes([IsAuthenticated])
-@api_view(['GET'])
-def showLoans(request):
-    loan = LoanApplication.objects.get()
-    return response
 
 
 def generate_loan_approval_document(request, loan_id):

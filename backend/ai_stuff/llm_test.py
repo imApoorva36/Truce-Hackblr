@@ -26,7 +26,7 @@ def extract_ratings(output_text):
 
 def extract_combined_rating(output_text):
     pattern = r"Combined\sRating:\s(\d+)"
-    match = re.search(pattern, output_text)
+    match = re.search(pattern, output_text, flags=re.IGNORECASE)
     if match:
         return match.group(1)
     else:

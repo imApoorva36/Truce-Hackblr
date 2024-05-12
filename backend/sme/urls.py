@@ -13,6 +13,8 @@ urlpatterns = [
     path('api/smereg', views.sme_reg, name="SME Registration"),
     path('api/smeupdate', views.sme_update, name="SME Update"),
     path('api/smedata',views.sme_getdata, name="SME Data fetch"),
+    path('api/loandata',views.loan_getdata, name="Loan Data fetch"),
+    path('api/allloandata', views.loan_get_all_data, name = "Loan All Data fetch"),
     path('api/auto_stage',views.auto_stage, name="Auto Stage"),
     path('api/manual_stage',views.manual_stage, name="Manual Stage"),
 
