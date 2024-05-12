@@ -48,3 +48,4 @@ class BusinessPlanEvaluation(models.Model):
     risk_assessment_rating = models.IntegerField()
     overall_score = models.IntegerField()
     feedback = models.TextField(default='')
+    created_at = models.DateTimeField(auto_now_add=True)

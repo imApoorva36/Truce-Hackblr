@@ -111,9 +111,17 @@ def loan_getdata(request):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def loan_get_all_data(request):
-    loan_data = LoanApplication.objects.all()
-    serialized_data = LoanApplicationSerializer(loan_data, many=True)
-    return Response(serialized_data.data)
+    loan_data = LoanApplication.objects.all().order_by('-created_at').first()
+    BusinessPlan_data = BusinessPlanEvaluation.objects.all().order_by('-created_at').first()
+
+    serialized_loan_data = LoanApplicationSerializer(loan_data, many=True)
+    serialized_bp_data = BusinessPlanEvaluationSerializer(BusinessPlan_data, many=True)
+    combined_data = {
+            'loan_data': serialized_loan_data.data,
+            'business_plan_data': serialized_bp_data.data
+        }
+
+    return Response(combined_data)
 
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['POST'])
