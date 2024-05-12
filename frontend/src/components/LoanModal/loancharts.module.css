@@ -1,0 +1,22 @@
+.charts h2 {
+    text-align: center;
+    max-width: 150px;
+}
+
+.charts>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.charts>div>div {
+    background-color: hsl(240, 100%, 17%);
+    color: white;
+    border: 4px solid hsl(240, 100%, 17%);
+}
+
+.charts>div:last-child>div {
+    background-color: rgb(12, 126, 12);
+    color: white;
+    border: 4px solid rgb(12, 126, 12);
+}

@@ -278,7 +278,7 @@ def bank_approval(request):
 
     for loan_application in loan_applications:
         status = loan_application.status
-        SME_name = loan_applications.sme.name
+        SME_name = loan_application.sme.name
         stage = None
         business_plan_evaluation = None
         loan_amount = loan_application.loan_amount

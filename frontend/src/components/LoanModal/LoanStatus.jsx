@@ -5,9 +5,11 @@ import { ImCross } from "react-icons/im"
 import { FaQuestion } from "react-icons/fa";
 import { useEffect, useState } from "react"
 import { PieChart } from '@mui/x-charts/PieChart';
+import LoanCharts from "./LoanCharts"
 
 export function LoanStatus({ loan }) {
 	let [ ring, setRing ] = useState(0)
+  console.log(loan)
 
   useEffect(() => {
 		function setNext () {
@@ -121,6 +123,13 @@ export function LoanStatus({ loan }) {
               </div>
           </div>
       </div>
+      {loan.business_plan_evaluation ? 
+        <>
+          <h1 className="text-xl font-bold">Business Proposal Analysis</h1>
+          <LoanCharts business_plan_evaluation={loan.business_plan_evaluation}/>
+        </> 
+        : null
+      }
     </div>)
   );
 }

@@ -5,9 +5,13 @@ import { ImCross } from "react-icons/im"
 import { FaQuestion } from "react-icons/fa";
 import { useEffect, useState } from "react"
 import { PieChart } from '@mui/x-charts/PieChart';
+import LoanCharts from "./LoanCharts"
+import { Button } from "../ui/button"
+import { useAuth } from "@/helpers/auth"
 
 export function AdminLoanStatus({ loan }) {
 	let [ ring, setRing ] = useState(0)
+  let { token } = useAuth()
 
   useEffect(() => {
 		function setNext () {
@@ -23,6 +27,32 @@ export function AdminLoanStatus({ loan }) {
 
 		setTimeout(setNext, 100)
 	}, [ring])
+
+
+  async function accept () {
+    let res = await fetch("http://localhost:8000/api/bank/approve/"+loan.loan_application_id, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (res.ok) window.location.reload()
+    else alert("An error occured")
+  }
+
+  async function reject () {
+    let res = await fetch("http://localhost:8000/api/bank/deny/"+loan.loan_application_id, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (res.ok) window.location.reload()
+    else alert("An error occured")
+  }
+
 
   let titleText
   let stage2
@@ -42,7 +72,7 @@ export function AdminLoanStatus({ loan }) {
     stage3 = <TiTick size={20} />
   } else if (loan.status == "rejected") {
     titleText = "Rejected"
-    stage2 = <ImCross size={14} />
+    stage2 = <TiTick size={20} />
     stage3 = <ImCross size={14} />
   } else {
     titleText = "Pending"
@@ -112,6 +142,21 @@ export function AdminLoanStatus({ loan }) {
               </div>
           </div>
       </div>
+      {loan.business_plan_evaluation ? 
+        <>
+          <h1 className="text-xl font-bold">Business Proposal Analysis</h1>
+          <LoanCharts business_plan_evaluation={loan.business_plan_evaluation}/>
+        </> 
+        : null
+      }
+
+      { loan.status == "ml_approved" ?
+        <div className="flex justify-end gap-4">
+          <Button className="text-foreground bg-green-700 hover:bg-green-700/90" onClick={accept}>Approve</Button>
+          <Button className="text-foreground bg-red-700 hover:bg-red-700/90" onClick={reject}>Reject</Button>
+        </div>
+        : null
+      }
     </div>)
   );
 }

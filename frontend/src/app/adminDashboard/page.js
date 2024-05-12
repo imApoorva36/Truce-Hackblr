@@ -30,7 +30,7 @@ export default function Admin () {
 
     useEffect(() => {
 		async function getLoans () {
-			let res = await fetch("http://127.0.0.1:8000/api/allloandata", {
+			let res = await fetch("http://127.0.0.1:8000/api/bank", {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}
@@ -42,7 +42,7 @@ export default function Admin () {
 			}
 
 			let data = await res.json()
-			setLoans(data)
+			setLoans(data.toReversed())
 		}
 
 		getLoans()

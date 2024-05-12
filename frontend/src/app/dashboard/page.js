@@ -49,7 +49,7 @@ export default function Dashboard() {
 		}
 
 		async function getLoans () {
-			let res = await fetch("http://127.0.0.1:8000/api/loandata", {
+			let res = await fetch("http://127.0.0.1:8000/api/loan_status", {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}
