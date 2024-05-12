@@ -39,6 +39,8 @@ class LoanApplication(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+from django.utils import timezone
+
 class BusinessPlanEvaluation(models.Model):
     loan_application = models.OneToOneField(LoanApplication, on_delete=models.CASCADE, related_name='business_plan_evaluation')
     market_analysis_rating = models.IntegerField()
@@ -48,4 +50,3 @@ class BusinessPlanEvaluation(models.Model):
     risk_assessment_rating = models.IntegerField()
     overall_score = models.IntegerField()
     feedback = models.TextField(default='')
-    created_at = models.DateTimeField(auto_now_add=True)

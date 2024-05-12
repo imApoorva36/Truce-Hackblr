@@ -111,17 +111,49 @@ def loan_getdata(request):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def loan_get_all_data(request):
-    loan_data = LoanApplication.objects.all().order_by('-created_at').first()
-    BusinessPlan_data = BusinessPlanEvaluation.objects.all().order_by('-created_at').first()
+    loan_applications = LoanApplication.objects.all()
 
-    serialized_loan_data = LoanApplicationSerializer(loan_data, many=True)
-    serialized_bp_data = BusinessPlanEvaluationSerializer(BusinessPlan_data, many=True)
-    combined_data = {
-            'loan_data': serialized_loan_data.data,
-            'business_plan_data': serialized_bp_data.data
+    if not loan_applications:
+        return JsonResponse({"error": "No loan application found for this user."}, status=404)
+
+    response_data = []
+
+    for loan_application in loan_applications:
+        status = loan_application.status
+        stage = None
+        business_plan_evaluation = None
+        loan_amount = loan_application.loan_amount
+        repayment_prob = loan_application.repay_prob
+        if status == 'ml_approved' or status == 'ml_rejected':
+            pass
+        elif status in ['approved', 'rejected']:
+            try:
+                business_plan_evaluation = BusinessPlanEvaluation.objects.get(loan_application=loan_application)
+            except BusinessPlanEvaluation.DoesNotExist:
+                pass
+
+        loan_data = {
+            "loan_application_id": loan_application.id,
+            "status": status,
+            "loan_amount": loan_amount,
+            "repay_prob": repayment_prob
         }
 
-    return Response(combined_data)
+        if business_plan_evaluation:
+            business_plan_evaluation_data = {
+                "market_analysis_rating": business_plan_evaluation.market_analysis_rating,
+                "business_model_rating": business_plan_evaluation.business_model_rating,
+                "financial_projections_rating": business_plan_evaluation.financial_projections_rating,
+                "management_team_rating": business_plan_evaluation.management_team_rating,
+                "risk_assessment_rating": business_plan_evaluation.risk_assessment_rating,
+                "overall_score": business_plan_evaluation.overall_score,
+            }
+            loan_data["business_plan_evaluation"] = business_plan_evaluation_data
+
+        response_data.append(loan_data)
+
+    return JsonResponse(response_data, safe=False)
+
 
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['POST'])
