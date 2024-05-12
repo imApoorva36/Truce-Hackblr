@@ -104,14 +104,14 @@ def sme_getdata(request):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def loan_getdata(request):
-    loan_data = LoanApplication.objects.filter(sme=request.user.sme_profile)
+    loan_data = LoanApplication.objects.filter(sme=request.user.sme_profile).order_by('created_at')
     serialized_data = LoanApplicationSerializer(loan_data, many=True)
     return Response(serialized_data.data)
 
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def loan_get_all_data(request):
-    loan_applications = LoanApplication.objects.all()
+    loan_applications = LoanApplication.objects.all().order_by('created_at')
 
     if not loan_applications:
         return JsonResponse({"error": "No loan application found for this user."}, status=404)
@@ -223,7 +223,7 @@ def auto_stage(request):
 @permission_classes([IsAuthenticated])
 def get_loan_status(request):
     sme_instance = request.user.sme_profile
-    loan_applications = LoanApplication.objects.filter(sme=sme_instance)
+    loan_applications = LoanApplication.objects.filter(sme=sme_instance).order_by('created_at')
 
     if not loan_applications:
         return JsonResponse({"error": "No loan application found for this user."}, status=404)
