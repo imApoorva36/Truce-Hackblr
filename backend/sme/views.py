@@ -179,7 +179,9 @@ def manual_stage(request):
 
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
-def 
+def showLoans(request):
+    loan = LoanApplication.objects.get()
+    return response
 
 
 def generate_loan_approval_document(request, loan_id):
