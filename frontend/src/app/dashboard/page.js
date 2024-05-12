@@ -19,7 +19,7 @@ import { TiTick } from 'react-icons/ti'
 import { ImCross } from 'react-icons/im'
 import { TiEye } from "react-icons/ti"
 import { PieChart } from '@mui/x-charts/PieChart';
-import { LoanStatus } from '@/components/LoanStatus'
+import { LoanStatus } from '@/components/LoanModal/LoanStatus'
 
 export default function Dashboard() {
 	let router = useRouter()
@@ -28,9 +28,10 @@ export default function Dashboard() {
 	let [ ring, setRing ] = useState(0)
 	let [ loanOpen, setLoanOpen ] = useState(-1)
 
-	let { token } = useAuth()
+	let { token, username } = useAuth()
 
-	if (!token) router.push("/login")
+	if (!username) router.push("/login")
+	else if (username == "admin@quickcredit.com") router.push("/adminDashboard");
 
 	useEffect(() => {
 		async function getSme() {
@@ -202,7 +203,7 @@ export default function Dashboard() {
 		</div>
 		{
 			loanOpen >= 0 ? 
-			<div className="h-screen w-full bg-black/30 flex justify-center items-center fixed top-0 left-0 z-50" onClick={() => setLoanOpen(-1)}>
+			<div className="h-screen w-full bg-black/80 flex justify-center items-center fixed top-0 left-0 z-50" onClick={() => setLoanOpen(-1)}>
 				<div className="bg-white text-secondary rounded-lg shadow max-h-[80vh] overflow-scroll p-10" onClick={e => e.stopPropagation()}>
 					<LoanStatus loan={loans[loanOpen]} />
 				</div>
