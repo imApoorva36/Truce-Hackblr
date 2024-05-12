@@ -270,7 +270,7 @@ def get_loan_status(request):
 @permission_classes([IsAuthenticated])  # Add this line
 @api_view(['GET'])
 def bank_approval(request):
-    loan_applications = LoanApplication.objects.all()
+    loan_applications = LoanApplication.objects.all().order_by('created_at')
     if not loan_applications:
         return JsonResponse({"error": "No loan application found."}, status=404)
 
