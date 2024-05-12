@@ -6,9 +6,10 @@ export const formSchema = z.object({
     residential_assets_value: z.coerce.number({ invalid_type_error: "Enter residential assets value" }).min(0, { message: "Enter valid value"}),
     commercial_assets_value: z.coerce.number({ invalid_type_error: "Enter commercial assets value" }).min(0, { message: "Enter valid value"}),
     luxury_assets_value: z.coerce.number({ invalid_type_error: "Enter luxury assets value" }).min(0, { message: "Enter valid value"}),
-    bank_assets_value: z.coerce.number({ invalid_type_error: "Enter bank assets value" }).min(0, { message: "Enter valid value"}),
-    self_employed: z.boolean().default(false).optional(),
+    bank_asset_value: z.coerce.number({ invalid_type_error: "Enter bank assets value" }).min(0, { message: "Enter valid value"}),
+    self_employed: z.boolean().optional(),
 
     loan_amount: z.coerce.number({ invalid_type_error: "Enter loan ammount" }).min(1, { message: "Enter valid amount"}),
-    loan_term: z.coerce.number({ invalid_type_error: "Enter loan term" }).min(1, { message: "Enter valid number"})
+    loan_term: z.coerce.number({ invalid_type_error: "Enter loan term" }).min(1, { message: "Enter valid number"}),
+    business_plan: z.string({ required_error: "Enter your business plan" }).min(1, { message: "Enter your business plan" }).min(100, { message: "Enter atleast 100 characters" })
 })

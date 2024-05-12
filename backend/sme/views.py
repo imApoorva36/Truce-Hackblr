@@ -33,7 +33,7 @@ from django_nextjs.render import render_nextjs_page_sync
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.http import HttpResponse
-#from weasyprint import HTML
+from weasyprint import HTML
 def index(request):
     return render_nextjs_page_sync(request)
     
@@ -123,7 +123,7 @@ def auto_stage(request):
     data = json.loads(request.body)
     cibil_score = sme_instance.cibil_score
     ### stage 1 ###
-    if cibil_score >= 100:
+    if cibil_score >= 300:
         loan_application = LoanApplication.objects.create(
             sme=sme_instance,
             no_of_dependents = data.get('no_of_dependents'),
@@ -141,7 +141,7 @@ def auto_stage(request):
         loan_application.save()
 
     else:
-        return JsonResponse({"message": "SME Registration Unsuccessful"})
+        return JsonResponse({"message": "SME Registration Unsuccessful"}, status=400)
     ### stage 2 ###
 
     sme_data = [loan_application.no_of_dependents, 

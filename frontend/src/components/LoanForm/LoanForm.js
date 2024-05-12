@@ -14,17 +14,41 @@ import { useForm } from "react-hook-form"
 import { formSchema } from "./LoanFormSchema"
 import { FormLabel } from "@mui/material"
 import { Switch } from "@/components/ui/switch"
+import { useAuth } from "@/helpers/auth"
+import { useRouter } from "next/navigation"
+import { Textarea } from "../ui/textarea"
 
 export default function LoanForm () {
+    let router = useRouter()
+    let { token } = useAuth()
+
+    if (!token) router.push("/login")
+
     let form = useForm({ 
         resolver: zodResolver(formSchema),
         defaultValues: {
-            no_of_dependents: 0
+            no_of_dependents: 0,
+            self_employed: false
         }
     })
 
-    function onSubmit () {
-        console.log(form.getValues().no_of_dependents)
+    async function onSubmit () {
+        let res = await fetch("http://localhost:8000/api/auto_stage", {
+            method: "POST",
+            body: JSON.stringify({
+                ...form.getValues()
+            }),
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        if (!res.ok) {
+            alert("You are not eligible for this loan because your CIBIL Score is too low.")
+            return
+        }
+
+        router.push("/dashboard")
     }
 
     return (
@@ -95,7 +119,7 @@ export default function LoanForm () {
                         />
                         <FormField
                             control={form.control}
-                            name="bank_assets_value"
+                            name="bank_asset_value"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
@@ -145,6 +169,22 @@ export default function LoanForm () {
                                 <FormItem>
                                     <FormControl>
                                         <Input placeholder="Loan Term" type="number" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="business_plan"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Textarea
+                                            placeholder="Write a short note on your Business Plan..."
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

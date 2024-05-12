@@ -57,7 +57,7 @@ export function LandingPage() {
               <div className="space-x-4">
                 <Link
                   className="inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                  href="#">
+                  href="dashboard/">
                   Apply Now
                 </Link>
               </div>
@@ -71,10 +71,10 @@ export function LandingPage() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <div
-                    className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                    className="inline-block rounded-lg bg-background px-3 py-1 text-sm dark:bg-gray-800">
                     Fast Approval
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Get Approved in Minutes</h2>
+                  <h2 className="text-3xl text-gray-800 font-bold tracking-tighter sm:text-5xl">Get Approved in Minutes</h2>
                   <p
                     className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                     Our streamlined application process and advanced algorithms allow us to provide fast loan approvals,
@@ -83,10 +83,10 @@ export function LandingPage() {
                 </div>
                 <div className="space-y-2">
                   <div
-                    className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                    className="inline-block rounded-lg bg-background px-3 py-1 text-sm dark:bg-gray-800">
                     Low Interest Rates
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Affordable Financing</h2>
+                  <h2 className="text-3xl text-gray-800 font-bold tracking-tighter sm:text-5xl">Affordable Financing</h2>
                   <p
                     className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                     Our platform offers competitive interest rates, so you can borrow the money you need without
@@ -95,10 +95,10 @@ export function LandingPage() {
                 </div>
                 <div className="space-y-2">
                   <div
-                    className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                    className="inline-block bg-background rounded-lg px-3 py-1 text-sm dark:bg-gray-800">
                     Flexible Repayment
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Customized Repayment Plans</h2>
+                  <h2 className="text-3xl text-gray-800 font-bold tracking-tighter sm:text-5xl">Customized Repayment Plans</h2>
                   <p
                     className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                     Choose from a variety of repayment options that fit your budget and lifestyle, so you can pay off

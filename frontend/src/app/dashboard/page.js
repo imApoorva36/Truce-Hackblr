@@ -142,7 +142,7 @@ export default function Dashboard() {
 				<Card>
 					<CardHeader className="flex justify-between items-center flex-row">
 						<CardTitle>Loan Details</CardTitle>
-						<Button variant="outline" className="text-foreground">Apply for Loan</Button>
+						<Link href="/loans/create"><Button variant="outline" className="text-foreground">Apply for Loan</Button></Link>
 					</CardHeader>
 					<CardContent>
 						<Table>
