@@ -23,8 +23,9 @@ QuickCredit aims to address the challenge of financial inclusion for small and m
 
 ### 3️⃣ Pitch Deck
 
-The pitch deck provides an overview of the project, its technical implementation, and future roadmap. Please refer the attached canva link for the detailed ppt on the same.
-!!!!!!!!!!!!ATTACH A PPT HERE.
+The pitch deck provides an overview of the project, its technical implementation, and future roadmap. Please refer the attached [presentation link](https://www.canva.com/design/DAGE_McgApQ/Bt_3aKr4ogT6k_kf0C16AA/edit?utm_content=DAGE_McgApQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) for the same.
+
+[Link to the demo](https://www.loom.com/share/96244a4ac6d643a4b75b5075308911ae?sid=b4c2cdee-694c-4a54-afbf-d8b6a46e2714)
 
 ## Project Structure
 
