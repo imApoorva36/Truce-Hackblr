@@ -33,7 +33,7 @@ from django_nextjs.render import render_nextjs_page_sync
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.http import HttpResponse
-from weasyprint import HTML
+# from weasyprint import HTML
 def index(request):
     return render_nextjs_page_sync(request)
     
@@ -246,10 +246,11 @@ def get_loan_status(request):
 
 
 def generate_loan_approval_document(request, loan_id):
-    loan = LoanApplication.objects.get(id=loan_id)
-    context = {'loan': loan}
-    html_content = render_to_string('sme/loan_approval_template.html', context)
-    pdf_file = HTML(string=html_content).write_pdf()
-    response = HttpResponse(pdf_file, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="loan_approval.pdf"'
-    return response
+    # loan = LoanApplication.objects.get(id=loan_id)
+    # context = {'loan': loan}
+    # html_content = render_to_string('sme/loan_approval_template.html', context)
+    # pdf_file = HTML(string=html_content).write_pdf()
+    # response = HttpResponse(pdf_file, content_type='application/pdf')
+    # response['Content-Disposition'] = f'attachment; filename="loan_approval.pdf"'
+    # return response
+    pass

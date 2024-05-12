@@ -14,30 +14,8 @@ export function LandingPage() {
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link className="flex items-center justify-center" href="#">
           <MountainIcon className="h-6 w-6" />
-          <span className="sr-only">Loan Approval Platform</span>
+          <span className="sr-only">QuickCredit</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#">
-            Features
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#">
-            Pricing
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#">
-            About
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#">
-            Contact
-          </Link>
-        </nav>
       </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
@@ -49,7 +27,7 @@ export function LandingPage() {
                   Get Approved for a Loan in Minutes
                 </h1>
                 <p
-                  className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                  className="mx-auto max-w-[700px] text-gray-400 md:text-xl dark:text-gray-400">
                   Our platform offers fast and flexible loan approvals with low interest rates and customizable
                   repayment options.
                 </p>
@@ -108,10 +86,10 @@ export function LandingPage() {
               </div>
               <img
                 alt="Image"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
+                className="mx-auto overflow-hidden rounded-xl object-center"
                 height="310"
-                src="/placeholder.svg"
-                width="550" />
+                src="/picland.jpg"
+                />
             </div>
           </div>
         </section>
@@ -131,7 +109,7 @@ export function LandingPage() {
                 className="space-y-4 rounded-lg border p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
                 <div className="flex items-center space-x-4">
                   <Avatar>
-                    <AvatarImage src="/placeholder-avatar.svg" />
+                    <AvatarImage src="/person.png" />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
                   <div>
@@ -148,7 +126,7 @@ export function LandingPage() {
                 className="space-y-4 rounded-lg border p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
                 <div className="flex items-center space-x-4">
                   <Avatar>
-                    <AvatarImage src="/placeholder-avatar.svg" />
+                    <AvatarImage src="/person.png" />
                     <AvatarFallback>JS</AvatarFallback>
                   </Avatar>
                   <div>
@@ -165,7 +143,7 @@ export function LandingPage() {
                 className="space-y-4 rounded-lg border p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
                 <div className="flex items-center space-x-4">
                   <Avatar>
-                    <AvatarImage src="/placeholder-avatar.svg" />
+                    <AvatarImage src="/person.png" />
                     <AvatarFallback>MJ</AvatarFallback>
                   </Avatar>
                   <div>
@@ -174,14 +152,17 @@ export function LandingPage() {
                   </div>
                 </div>
                 <p className="text-gray-500 dark:text-gray-400">
-                  "I was able to get a loan to cover some unexpected home repairs. The process was quick and easy, and
+                  "I was able to get a loan to cover few home repairs. The process was quick and easy, and
                   the repayment terms were very flexible."
                 </p>
               </div>
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+        <section className="w-full py-4 md:py-12 lg:py-16 bg-gray-100 dark:bg-gray-800">
+        <h1 className="flex justify-center items-center w-full h-full text-5xl font-bold mb-10 text-gray-800 tracking-tighter">
+          Analytics
+        </h1>
           <div className="container px-4 md:px-6">
             <div className="grid gap-6">
               <div className="grid md:grid-cols-3 gap-6">
@@ -283,7 +264,7 @@ export function LandingPage() {
       </main>
       <footer
         className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© 2024 Loan Approval Platform. All rights reserved.</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">© 2024 QuickCredit. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Privacy

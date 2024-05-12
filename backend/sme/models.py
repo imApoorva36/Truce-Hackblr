@@ -8,7 +8,7 @@ class SME(models.Model):
     name = models.CharField(max_length=255)
     year = models.IntegerField(default=2000)
     industry = models.CharField(max_length=100, default=None)
-    address = models.CharField(max_length=30, default=None)
+    address = models.CharField(max_length=100, default=None)
     cibil_score = models.IntegerField(default=None)
     
 class LoanApplication(models.Model):
