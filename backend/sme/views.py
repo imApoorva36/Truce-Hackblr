@@ -115,7 +115,7 @@ def auto_stage(request):
             sme=sme_instance,
             no_of_dependents = data.get('no_of_dependents'),
             income_annum = data.get('income_annum'),
-            #cibil_score = sme_prof.cibil_score,
+            cibil_score = sme_instance.cibil_score,
             residential_assets_value = data.get('residential_assets_value'),
             commercial_assets_value = data.get('commercial_assets_value'),
             luxury_assets_value = data.get('luxury_assets_value'),
@@ -176,6 +176,10 @@ def manual_stage(request):
 
     #loan_application.save()
     return JsonResponse({"message": f"Stage 3: Loan Processing"})
+
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def 
 
 
 def generate_loan_approval_document(request, loan_id):
