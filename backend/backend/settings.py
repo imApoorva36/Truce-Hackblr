@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://158.101.181.171:3000"]
 
 # Optional: Allow cookies to be included in CORS requests (if needed)
 CORS_ALLOW_CREDENTIALS = True
@@ -79,10 +79,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://frontend:3000","http://localhost:3000"
+    "http://frontend:3000","http://localhost:3000", "http://158.101.181.171:3000"
 ]
 
-ALLOWED_HOSTS=['frontend','localhost','backend','127.0.0.1']
+ALLOWED_HOSTS=['frontend','localhost','backend','127.0.0.1', '158.101.181.171']
 
 ROOT_URLCONF = 'backend.urls'
 
