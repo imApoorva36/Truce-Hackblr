@@ -30,7 +30,7 @@ export function AdminLoanStatus({ loan }) {
 
 
   async function accept () {
-    let res = await fetch("http://localhost:8000/api/bank/approve/"+loan.loan_application_id, {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bank/approve/${loan.loan_application_id}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`
@@ -42,7 +42,7 @@ export function AdminLoanStatus({ loan }) {
   }
 
   async function reject () {
-    let res = await fetch("http://localhost:8000/api/bank/deny/"+loan.loan_application_id, {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bank/deny/${loan.loan_application_id}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`

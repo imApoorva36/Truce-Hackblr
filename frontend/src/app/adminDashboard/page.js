@@ -30,7 +30,7 @@ export default function Admin () {
 
     useEffect(() => {
 		async function getLoans () {
-			let res = await fetch("http://127.0.0.1:8000/api/bank", {
+			let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bank`, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}

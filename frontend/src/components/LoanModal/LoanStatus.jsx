@@ -135,7 +135,7 @@ export function LoanStatus({ loan }) {
       {
         loan.status == "approved" ?
         <div className="flex justify-end gap-4">
-          <Link href={`http://localhost:8000/api/print/${loan.loan_application_id}`}>
+          <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/api/print/${loan.loan_application_id}`}>
               <Button variant="secondary">Print Confirmation</Button>
           </Link>
         </div>

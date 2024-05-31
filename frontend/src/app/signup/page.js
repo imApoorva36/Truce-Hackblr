@@ -34,7 +34,7 @@ export default function Signup () {
     async function onSubmit (e) {
         let { email, password } = form.getValues()
         
-        let res = await fetch("http://localhost:8000/api/register/", {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/register/`, {
             method: "POST",
             body: JSON.stringify({ email, password })
         })
@@ -44,7 +44,7 @@ export default function Signup () {
             return
         }
 
-        res = await fetch("http://localhost:8000/api/token/", {
+        res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/token/`, {
             method: "POST",
             body: JSON.stringify({ username: email, password }),
             headers: {

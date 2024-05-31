@@ -24,7 +24,7 @@ export default function CompleteRegistration () {
     async function handleSubmit () {
         let { name, year, industry, address, cibil_score } = form.getValues()
         
-        let res = await fetch("http://localhost:8000/api/smereg", {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/smereg`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,

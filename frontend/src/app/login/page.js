@@ -35,7 +35,7 @@ export default function Login () {
     async function onSubmit (e) {
         let { email, password } = form.getValues()
 
-        let res = await fetch("http://localhost:8000/api/token/", {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/token/`, {
             method: "POST",
             body: JSON.stringify({ username: email, password }),
             headers: {

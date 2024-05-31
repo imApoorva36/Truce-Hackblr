@@ -33,7 +33,7 @@ export default function LoanForm () {
     })
 
     async function onSubmit () {
-        let res = await fetch("http://localhost:8000/api/auto_stage", {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auto_stage`, {
             method: "POST",
             body: JSON.stringify({
                 ...form.getValues()

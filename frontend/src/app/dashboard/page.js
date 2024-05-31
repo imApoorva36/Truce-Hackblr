@@ -35,7 +35,7 @@ export default function Dashboard() {
 
 	useEffect(() => {
 		async function getSme() {
-			let res = await fetch('http://127.0.0.1:8000/api/smedata', {
+			let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/smedata`, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}
@@ -49,14 +49,14 @@ export default function Dashboard() {
 		}
 
 		async function getLoans () {
-			let res = await fetch("http://127.0.0.1:8000/api/loan_status", {
+			let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/loan_status`, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}
 			})
 
 			if (!res.ok) {
-				alert("Error fetching loans")
+				// alert("Error fetching loans")
 				return
 			}
 

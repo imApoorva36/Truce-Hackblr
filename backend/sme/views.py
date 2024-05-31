@@ -237,7 +237,7 @@ def get_loan_status(request):
         business_plan_evaluation = None
         loan_amount = loan_application.loan_amount
         repayment_prob = loan_application.repay_prob
-        if status == 'ml_approved' or status == 'rejected':
+        if status in ['ml_approved', 'rejected','approved']:
             stage = 3
             try:
                 business_plan_evaluation = BusinessPlanEvaluation.objects.get(loan_application=loan_application)

@@ -23,7 +23,7 @@ export default function UpdateSme () {
 
     useEffect(() => {
 		async function getSme() {
-			let res = await fetch('http://127.0.0.1:8000/api/smedata', {
+			let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/smedata`, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}
@@ -46,7 +46,7 @@ export default function UpdateSme () {
     async function handleSubmit () {
         let { name, year, industry, address, cibil_score } = form.getValues()
         
-        let res = await fetch("http://localhost:8000/api/smeupdate", {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/smeupdate`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
