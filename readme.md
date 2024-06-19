@@ -1,6 +1,8 @@
 # QuickCredit
 A platform built to revolutionise SME loan application processes
 
+[Link to the demo](https://www.loom.com/share/96244a4ac6d643a4b75b5075308911ae?sid=b4c2cdee-694c-4a54-afbf-d8b6a46e2714)
+
 ## Overview
 
 QuickCredit aims to address the challenge of financial inclusion for small and medium enterprises (SMEs) by providing them with access to small loans through a simplified platform. The platform facilitates the loan application process, review, and approval. In our project we have leveraged generative AI and machine learning to analyze the business plan and loan application.  We have a 3 stage workflow which includes Automated and Manual checks leading to a successful loan application. We also generate a loan approval document for the user containing his/her loan details.
@@ -25,7 +27,6 @@ QuickCredit aims to address the challenge of financial inclusion for small and m
 
 The pitch deck provides an overview of the project, its technical implementation, and future roadmap. Please refer the attached [presentation link](https://www.canva.com/design/DAGE_McgApQ/Bt_3aKr4ogT6k_kf0C16AA/edit?utm_content=DAGE_McgApQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) for the same.
 
-[Link to the demo](https://www.loom.com/share/96244a4ac6d643a4b75b5075308911ae?sid=b4c2cdee-694c-4a54-afbf-d8b6a46e2714)
 
 ## Project Structure
 
